@@ -83,7 +83,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             FormsContract.FormsTable.COLUMN_SYNCED + " TEXT," +
             FormsContract.FormsTable.COLUMN_SYNCED_DATE + " TEXT"
             + " );";
-    private static final String SQL_CREATE_HOUSEHOLD = "CREATE TABLE "
+    /*private static final String SQL_CREATE_HOUSEHOLD = "CREATE TABLE "
             + householdForm.TABLE_NAME + "("
             + householdForm.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + householdForm.COLUMN_PROJECT_NAME + " TEXT,"
@@ -99,7 +99,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             householdForm.COLUMN_DEVICEID + " TEXT," +
             householdForm.COLUMN_SYNCED + " TEXT," +
             householdForm.COLUMN_SYNCED_DATE + " TEXT"
-            + " );";
+            + " );";*/
     private static final String SQL_CREATE_CENSUS = "CREATE TABLE "
             + censusMember.TABLE_NAME + "("
             + censusMember.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -148,19 +148,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + " );";
     private static final String SQL_CREATE_MEMBERS = "CREATE TABLE "
             + singleMember.TABLE_NAME + "("
-            + singleMember.COLUMN_ID + " TEXT," +
-            singleMember.COLUMN_DATE + " TEXT," +
+            + singleMember.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+            singleMember.COLUMN_DSS_ID_MEMBER + " TEXT," +
             singleMember.COLUMN_DSS_ID_HH + " TEXT," +
+            singleMember.COLUMN_NAME + " TEXT," +
+            singleMember.COLUMN_DOB + " TEXT," +
+            singleMember.COLUMN_GENDER + " TEXT," +
+            singleMember.COLUMN_MEMBER_TYPE + " TEXT" +
+
+            /*singleMember.COLUMN_DATE + " TEXT," +
             singleMember.COLUMN_DSS_ID_F + " TEXT," +
             singleMember.COLUMN_DSS_ID_M + " TEXT," +
             singleMember.COLUMN_DSS_ID_H + " TEXT," +
-            singleMember.COLUMN_DSS_ID_MEMBER + " TEXT," +
             singleMember.COLUMN_PREVS_DSS_ID_MEMBER + " TEXT," +
             singleMember.COLUMN_SITE_CODE + " TEXT," +
-            singleMember.COLUMN_NAME + " TEXT," +
-            singleMember.COLUMN_DOB + " TEXT," +
             singleMember.COLUMN_AGE + " TEXT," +
-            singleMember.COLUMN_GENDER + " TEXT," +
             singleMember.COLUMN_IS_HEAD + " TEXT," +
             singleMember.COLUMN_RELATION_HH + " TEXT," +
             singleMember.COLUMN_CURRENT_STATUS + " TEXT," +
@@ -168,10 +170,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             singleMember.COLUMN_DOD + " TEXT," +
             singleMember.COLUMN_M_STATUS + " TEXT," +
             singleMember.COLUMN_EDUCATION + " TEXT," +
-            singleMember.COLUMN_OCCUPATION + " TEXT," +
-            singleMember.COLUMN_MEMBER_TYPE + " TEXT" +
+            singleMember.COLUMN_OCCUPATION + " TEXT," +*/
+
             " );";
-    private static final String SQL_CREATE_DECEASED = "CREATE TABLE "
+
+    /*private static final String SQL_CREATE_DECEASED = "CREATE TABLE "
             + DeceasedMember.TABLE_NAME + "("
             + DeceasedMember.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
             DeceasedMember.COLUMN_PROJECT_NAME + " TEXT," +
@@ -201,7 +204,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             DeceasedMember.COLUMN_ISTATUS + " TEXT," +
             DeceasedMember.COLUMN_SYNCED + " TEXT," +
             DeceasedMember.COLUMN_SYNCED_DATE + " TEXT" +
-            " );";
+            " );";*/
 
 
     private static final String SQL_CREATE_MOTHER = "CREATE TABLE "
@@ -289,10 +292,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL(SQL_CREATE_USERS);
         db.execSQL(SQL_CREATE_FORMS);
-        db.execSQL(SQL_CREATE_HOUSEHOLD);
+//        db.execSQL(SQL_CREATE_HOUSEHOLD);
         db.execSQL(SQL_CREATE_MEMBERS);
         db.execSQL(SQL_CREATE_CENSUS);
-        db.execSQL(SQL_CREATE_DECEASED);
+//        db.execSQL(SQL_CREATE_DECEASED);
         db.execSQL(SQL_CREATE_MOTHER);
         db.execSQL(SQL_CREATE_SEC_K_IM);
 
@@ -302,10 +305,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL(SQL_DELETE_USERS);
         db.execSQL(SQL_DELETE_FORMS);
-        db.execSQL(SQL_DELETE_HOUSEHOLD);
+//        db.execSQL(SQL_DELETE_HOUSEHOLD);
         db.execSQL(SQL_DELETE_MEMBERS);
         db.execSQL(SQL_DELETE_CENSUS);
-        db.execSQL(SQL_DELETE_DECEASED);
+//        db.execSQL(SQL_DELETE_DECEASED);
         db.execSQL(SQL_DELETE_MOTHER);
         db.execSQL(SQL_DELETE_SEC_K_IM);
     }
@@ -330,7 +333,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 db.insert(singleUser.TABLE_NAME, null, values);
             }
 
-
         } catch (Exception e) {
             Log.d(TAG, "syncUser(e): " + e);
         } finally {
@@ -351,19 +353,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 member.Sync(jsonObjectMember);
                 ContentValues values = new ContentValues();
 
-                values.put(singleMember.COLUMN_ID, member.get_ID());
                 values.put(singleMember.COLUMN_DSS_ID_MEMBER, member.getDss_id_member());
-                values.put(singleMember.COLUMN_DATE, member.get_DATE());
+                values.put(singleMember.COLUMN_NAME, member.getName());
+                values.put(singleMember.COLUMN_DOB, member.getDob());
                 values.put(singleMember.COLUMN_DSS_ID_HH, member.getDss_id_hh());
+                values.put(singleMember.COLUMN_GENDER, member.getGender());
+                values.put(singleMember.COLUMN_MEMBER_TYPE, member.getMember_type());
+                /*values.put(singleMember.COLUMN_DATE, member.get_DATE());
                 values.put(singleMember.COLUMN_DSS_ID_F, member.getDss_id_f());
                 values.put(singleMember.COLUMN_DSS_ID_M, member.getDss_id_m());
                 values.put(singleMember.COLUMN_DSS_ID_H, member.getDss_id_h());
                 values.put(singleMember.COLUMN_PREVS_DSS_ID_MEMBER, member.getPrevs_dss_id_member());
                 values.put(singleMember.COLUMN_SITE_CODE, member.getSite_code());
-                values.put(singleMember.COLUMN_NAME, member.getName());
-                values.put(singleMember.COLUMN_DOB, member.getDob());
                 values.put(singleMember.COLUMN_AGE, member.getAge());
-                values.put(singleMember.COLUMN_GENDER, member.getGender());
                 values.put(singleMember.COLUMN_IS_HEAD, member.getIs_head());
                 values.put(singleMember.COLUMN_RELATION_HH, member.getRelation_hh());
                 values.put(singleMember.COLUMN_CURRENT_STATUS, member.getCurrent_status());
@@ -371,8 +373,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(singleMember.COLUMN_DOD, member.getDod());
                 values.put(singleMember.COLUMN_M_STATUS, member.getM_status());
                 values.put(singleMember.COLUMN_EDUCATION, member.getEducation());
-                values.put(singleMember.COLUMN_OCCUPATION, member.getOccupation());
-                values.put(singleMember.COLUMN_MEMBER_TYPE, member.getMember_type());
+                values.put(singleMember.COLUMN_OCCUPATION, member.getOccupation());*/
 
                 db.insert(singleMember.TABLE_NAME, null, values);
             }
@@ -384,31 +385,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.close();
         }
     }
-
-//    public ArrayList<UsersContract> getAllUsers() {
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        ArrayList<UsersContract> userList = null;
-//        try {
-//            userList = new ArrayList<UsersContract>();
-//            String QUERY = "SELECT * FROM " + singleUser.TABLE_NAME;
-//            Cursor cursor = db.rawQuery(QUERY, null);
-//            int num = cursor.getCount();
-//            if (!cursor.isLast()) {
-//                while (cursor.moveToNext()) {
-//                    UsersContract user = new UsersContract();
-//                    user.setId(cursor.getInt(0));
-//                    user.setUserName(cursor.getString(1));
-//                    user.setPassword(cursor.getString(2));
-//                    user.setFULL_NAME(cursor.getString(3));
-//                    user.setREGION_DSS(cursor.getString(4));
-//                    userList.add(user);
-//                }
-//            }
-//            db.close();
-//        } catch (Exception e) {
-//        }
-//        return userList;
-//    }
 
     public boolean Login(String username, String password) throws SQLException {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -426,24 +402,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
-    public Collection<MembersContract> getMembersByDSS(String dssID) {
+    public Collection<MembersContract> getSelectedMothersByDSS(String dssID) {
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = null;
         String[] columns = {
                 singleMember.COLUMN_ID,
-                singleMember.COLUMN_DATE,
+                singleMember.COLUMN_DSS_ID_MEMBER,
                 singleMember.COLUMN_DSS_ID_HH,
+                singleMember.COLUMN_NAME,
+                singleMember.COLUMN_DOB,
+                singleMember.COLUMN_GENDER,
+                singleMember.COLUMN_MEMBER_TYPE,
+
+                /*singleMember.COLUMN_DATE,
                 singleMember.COLUMN_DSS_ID_F,
                 singleMember.COLUMN_DSS_ID_M,
                 singleMember.COLUMN_DSS_ID_H,
-                singleMember.COLUMN_DSS_ID_MEMBER,
                 singleMember.COLUMN_PREVS_DSS_ID_MEMBER,
                 singleMember.COLUMN_SITE_CODE,
-                singleMember.COLUMN_NAME,
-                singleMember.COLUMN_DOB,
                 singleMember.COLUMN_AGE,
-                singleMember.COLUMN_GENDER,
                 singleMember.COLUMN_IS_HEAD,
                 singleMember.COLUMN_RELATION_HH,
                 singleMember.COLUMN_CURRENT_STATUS,
@@ -451,12 +429,60 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 singleMember.COLUMN_DOD,
                 singleMember.COLUMN_M_STATUS,
                 singleMember.COLUMN_EDUCATION,
-                singleMember.COLUMN_OCCUPATION,
+                singleMember.COLUMN_OCCUPATION,*/
+        };
+
+        String whereClause = singleMember.COLUMN_DSS_ID_HH + " = ? AND "+singleMember.COLUMN_MEMBER_TYPE + " = ?";
+        String[] whereArgs = new String[]{dssID,"M"};
+        String groupBy = null;
+        String having = null;
+
+        String orderBy =
+                singleMember.COLUMN_DSS_ID_MEMBER + " ASC";
+
+        Collection<MembersContract> memList = new ArrayList<MembersContract>();
+        try {
+            c = db.query(
+                    singleMember.TABLE_NAME,  // The table to query
+                    columns,                   // The columns to return
+                    whereClause,               // The columns for the WHERE clause
+                    whereArgs,                 // The values for the WHERE clause
+                    groupBy,                   // don't group the rows
+                    having,                    // don't filter by row groups
+                    orderBy                    // The sort order
+            );
+            while (c.moveToNext()) {
+                MembersContract mc = new MembersContract();
+                memList.add(mc.Hydrate(c));
+            }
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
+        return memList;
+    }
+
+    public Collection<MembersContract> getSelectedChildByMotherID(String dssID,String member_id) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = null;
+        String[] columns = {
+                singleMember.COLUMN_ID,
+                singleMember.COLUMN_DSS_ID_MEMBER,
+                singleMember.COLUMN_DSS_ID_HH,
+                singleMember.COLUMN_NAME,
+                singleMember.COLUMN_DOB,
+                singleMember.COLUMN_GENDER,
                 singleMember.COLUMN_MEMBER_TYPE,
         };
 
-        String whereClause = singleMember.COLUMN_DSS_ID_HH + " = ?";
-        String[] whereArgs = new String[]{dssID};
+        String whereClause = singleMember.COLUMN_DSS_ID_HH + " = ? AND "+singleMember.COLUMN_MEMBER_TYPE + " = ? AND "
+                + singleMember.COLUMN_DSS_ID_MEMBER + " LIKE ?";
+        String[] whereArgs = new String[]{dssID,"CH","%"+member_id+"%"};
         String groupBy = null;
         String having = null;
 

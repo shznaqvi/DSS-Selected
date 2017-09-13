@@ -9,10 +9,12 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:orientation="horizontal"
+        android:layoutDirection="ltr"
+        android:background="@color/colorPrimary"
         android:weightSum="100">
 
         <TextView
-            android:id="@+id/date_of_birth"
+            android:id="@+id/mother_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
@@ -29,7 +31,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/mother_name"
+                android:id="@+id/date_of_birth"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -38,7 +40,7 @@
                 android:textSize="30sp" />
 
             <TextView
-                android:id="@+id/child_name"
+                android:id="@+id/dss_id_member"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"

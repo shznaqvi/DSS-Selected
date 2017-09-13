@@ -68,27 +68,27 @@ public class MainApp extends Application {
     public static FormsContract fc;
     public static String userName = "0000";
     public static String areaCode;
-//    Total No of members got from Section A
+    //    Total No of members got from Section A
     public static int NoMembersCount = 0;
     public static int NoMaleCount = 0;
     public static int NoFemaleCount = 0;
     public static int NoBoyCount = 0;
     public static int NoGirlCount = 0;
 
-    public static int TotalMembersCount = 0;
+    public static int TotalMWRACount = 0;
     public static int TotalMaleCount = 0;
     public static int TotalFemaleCount = 0;
     public static int TotalBoyCount = 0;
     public static int TotalGirlCount = 0;
 
-//    Total No of Alive members got from Section B
+    //    Total No of Alive members got from Section B
     public static int currentStatusCount = 0;
     public static int currentDeceasedCheck = 0;
     public static int currentMotherCheck = 0;
     public static List<deadMemberClass> deadMembers = new ArrayList<deadMemberClass>();
     //    Ali
     public static String regionDss = "";
-    public static List<MembersContract> familyMembersList;
+    public static ArrayList<MembersContract> selectedMothersList;
     public static CensusContract cc;
     public static DeceasedContract dc;
     public static MotherContract mc;
@@ -97,11 +97,14 @@ public class MainApp extends Application {
     public static int totalChild = 0;
     public static int memFlag = 0;
     public static List<Integer> memClicked;
-    public static ArrayList<MothersLst> lstMothers;
-    public static int position = 0;
+    public static ArrayList<MembersContract> lstSelectedChildren;
+    public static int motherPosition = 0;
+    public static int childPosition = 0;
     protected static LocationManager locationManager;
 
     public static double selectedCHILD = 24;
+    public static double selectedMotherMin = 15;
+    public static double selectedMotherMax = 49;
     public static int selectedPos = -1;
 
     public static int selectedCh = -1;
@@ -141,7 +144,7 @@ public class MainApp extends Application {
 
     }
 
-    public static int monthsBetweenDates(Date startDate, Date endDate){
+    public static int monthsBetweenDates(Date startDate, Date endDate) {
 
         Calendar start = Calendar.getInstance();
         start.setTime(startDate);
@@ -150,24 +153,38 @@ public class MainApp extends Application {
         end.setTime(endDate);
 
         int monthsBetween = 0;
-        int dateDiff = end.get(Calendar.DAY_OF_MONTH)-start.get(Calendar.DAY_OF_MONTH);
+        int dateDiff = end.get(Calendar.DAY_OF_MONTH) - start.get(Calendar.DAY_OF_MONTH);
 
-        if(dateDiff<0) {
+        if (dateDiff < 0) {
             int borrrow = end.getActualMaximum(Calendar.DAY_OF_MONTH);
-            dateDiff = (end.get(Calendar.DAY_OF_MONTH)+borrrow)-start.get(Calendar.DAY_OF_MONTH);
+            dateDiff = (end.get(Calendar.DAY_OF_MONTH) + borrrow) - start.get(Calendar.DAY_OF_MONTH);
             monthsBetween--;
 
-            if(dateDiff>0) {
+            if (dateDiff > 0) {
                 monthsBetween++;
             }
         }
 
-        monthsBetween += end.get(Calendar.MONTH)-start.get(Calendar.MONTH);
-        monthsBetween  += (end.get(Calendar.YEAR)-start.get(Calendar.YEAR))*12;
+        monthsBetween += end.get(Calendar.MONTH) - start.get(Calendar.MONTH);
+        monthsBetween += (end.get(Calendar.YEAR) - start.get(Calendar.YEAR)) * 12;
         return monthsBetween;
     }
 
-    public static void errorCheck(final Context context, String error){
+    public static boolean yearsBetweenDates(String dob) {
+
+        String[] dt = dob.split("/");
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(Integer.parseInt(dt[2]), Integer.parseInt(dt[1]) - 1, Integer.parseInt(dt[0]));
+        Date date1 = new Date();
+        Date date2 = cal.getTime();
+        long diff = date1.getTime() - date2.getTime();
+        long ageInYears = (diff / (24 * 60 * 60 * 1000)) / 365;
+
+        return ageInYears >= MainApp.selectedMotherMin && ageInYears <= MainApp.selectedMotherMax;
+    }
+
+    public static void errorCheck(final Context context, String error) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 context);
         alertDialogBuilder
@@ -184,7 +201,7 @@ public class MainApp extends Application {
         alert.show();
     }
 
-    public static void errorCountDialog(final Context context, final Activity activity, String error){
+    public static void errorCountDialog(final Context context, final Activity activity, String error) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 context);
         alertDialogBuilder
@@ -208,7 +225,7 @@ public class MainApp extends Application {
         alert.show();
     }
 
-    public static void finishActivity(final Context context, final Activity activity){
+    public static void finishActivity(final Context context, final Activity activity) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 context);
         alertDialogBuilder
@@ -231,7 +248,7 @@ public class MainApp extends Application {
         alert.show();
     }
 
-    public static void endActivity(final Context context, final Activity activity){
+    public static void endActivity(final Context context, final Activity activity) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 context);
         alertDialogBuilder
@@ -381,7 +398,6 @@ public class MainApp extends Application {
                 editor.apply();
             }
         }
-
 
 
         public void onStatusChanged(String s, int i, Bundle b) {

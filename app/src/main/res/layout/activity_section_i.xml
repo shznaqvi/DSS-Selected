@@ -117,7 +117,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@android:color/white" />
 
-        <DatePicker
+        <!--<DatePicker
             android:id="@+id/dci05"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -125,7 +125,16 @@
             android:calendarViewShown="false"
             android:datePickerMode="spinner"
             android:ems="10"
-            android:spinnersShown="true" />
+            android:spinnersShown="true" />-->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/pink_100"
+            android:id="@+id/dci05"
+            android:textColor="@color/colorPrimaryDark" />
 
         <TextView
             android:layout_width="match_parent"

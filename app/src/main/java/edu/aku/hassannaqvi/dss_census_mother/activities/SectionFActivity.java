@@ -3,30 +3,39 @@ package edu.aku.hassannaqvi.dss_census_mother.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import edu.aku.hassannaqvi.dss_census_mother.R;
+import edu.aku.hassannaqvi.dss_census_mother.contracts.MembersContract;
 import edu.aku.hassannaqvi.dss_census_mother.contracts.MotherContract;
 import edu.aku.hassannaqvi.dss_census_mother.core.DatabaseHelper;
 import edu.aku.hassannaqvi.dss_census_mother.core.MainApp;
@@ -48,15 +57,18 @@ public class SectionFActivity extends Activity {
     EditText dcf0203;
     @BindView(R.id.dcf03)
     EditText dcf03;
-    @BindView(R.id.dcf04dob)
+
+/*  @BindView(R.id.dcf04dob)
     DatePicker dcf04dob;
     @BindView(R.id.fldGrpdcf04a)
     LinearLayout fldGrpdcf04a;
     @BindView(R.id.fldGrpdcf04b)
-    LinearLayout fldGrpdcf04b;
-    @BindView(R.id.dcfAgeDob)
-    RadioGroup dcfAgeDob;
-    @BindView(R.id.dcfDob)
+    LinearLayout fldGrpdcf04b;*/
+
+    @BindView(R.id.dcf04AgeDob)
+    TextView dcf04AgeDob;
+
+    /*@BindView(R.id.dcfDob)
     RadioButton dcfDob;
     @BindView(R.id.dcfAge)
     RadioButton dcfAge;
@@ -65,7 +77,8 @@ public class SectionFActivity extends Activity {
     @BindView(R.id.dcf0402)
     EditText dcf0402;
     @BindView(R.id.dcf0403)
-    EditText dcf0403;
+    EditText dcf0403;*/
+
     @BindView(R.id.dcf05)
     EditText dcf05;
     @BindView(R.id.dcf06)
@@ -130,6 +143,11 @@ public class SectionFActivity extends Activity {
     EditText dcf12;
     @BindView(R.id.dcf0888)
     CheckBox dcf0888;
+    @BindView(R.id.childrenSpinner)
+    Spinner childrenSpinner;
+
+    ArrayList<String> chName;
+    Map<String, MembersContract> chMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,34 +157,64 @@ public class SectionFActivity extends Activity {
 
 //        appHeader.setText("DSS - > Section F: Reproductive History of Selected MotherTB");
 
-        MainApp.position = getIntent().getExtras().getInt("position");
+        MainApp.motherPosition = getIntent().getExtras().getInt("motherPosition");
 
-        dcf04dob.setMaxDate(new Date().getTime());
+        /*Fill spinner*/
 
-        if (MainApp.lstMothers.get(MainApp.position).getAgey().equals("")) {
+        chName = new ArrayList<>();
+        chMap = new HashMap<>();
+
+        chName.add("....");
+
+        for (byte i = 0; i < MainApp.lstSelectedChildren.size(); i++) {
+            chName.add(MainApp.lstSelectedChildren.get(i).getName());
+            chMap.put(MainApp.lstSelectedChildren.get(i).getName(), new MembersContract(MainApp.lstSelectedChildren.get(i)));
+        }
+
+        childrenSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, chName));
+
+        childrenSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+
+                MainApp.childPosition = pos;
+
+                if (MainApp.childPosition != 0) {
+                    dcf04AgeDob.setText(chMap.get(childrenSpinner.getSelectedItem().toString()).getDob());
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+        /*dcf04dob.setMaxDate(new Date().getTime());
+
+        if (MainApp.lstSelectedChildren.get(MainApp.motherPosition).getAgey().equals("")) {
             dcfDob.setChecked(true);
 
             fldGrpdcf04a.setVisibility(View.VISIBLE);
 
 //            dcf04dob.setMaxDate(new Date().getTime());
 
-            String[] dt = MainApp.lstMothers.get(MainApp.position).getDate_of_birth().split("-");
+            String[] dt = MainApp.lstSelectedChildren.get(MainApp.motherPosition).getDate_of_birth().split("-");
 
             dcf04dob.updateDate(Integer.parseInt(dt[2]), Integer.parseInt(dt[1]) - 1, Integer.parseInt(dt[0]));
-        }else {
+        } else {
             dcfAge.setChecked(true);
 
             fldGrpdcf04b.setVisibility(View.VISIBLE);
 
-            dcf0403.setText(MainApp.lstMothers.get(MainApp.position).getAgey());
-            dcf0402.setText(MainApp.lstMothers.get(MainApp.position).getAgem());
-            dcf0401.setText(MainApp.lstMothers.get(MainApp.position).getAged());
-        }
+            dcf0403.setText(MainApp.lstSelectedChildren.get(MainApp.motherPosition).getAgey());
+            dcf0402.setText(MainApp.lstSelectedChildren.get(MainApp.motherPosition).getAgem());
+            dcf0401.setText(MainApp.lstSelectedChildren.get(MainApp.motherPosition).getAged());
+        }*/
 
-//        dcfa.setText(MainApp.lstMothers.get(MainApp.position).getSerialm());
-//        dcfa.setEnabled(false);
-
-        dcfAgeDob.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        /*dcfAgeDob.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 if (dcfAge.isChecked()) {
@@ -183,7 +231,7 @@ public class SectionFActivity extends Activity {
 
                 }
             }
-        });
+        });*/
 
         // ===================== Q 7 Skip Pattern =================
 
@@ -468,8 +516,19 @@ public class SectionFActivity extends Activity {
         }
 
 //        04
+        if (childrenSpinner.getSelectedItem() == "....") {
+            Toast.makeText(this, "ERROR(Empty)" + getString(R.string.dcka), Toast.LENGTH_SHORT).show();
+            ((TextView) childrenSpinner.getSelectedView()).setText("This Data is Required");
+            ((TextView) childrenSpinner.getSelectedView()).setError("This Data is Required");
+            ((TextView) childrenSpinner.getSelectedView()).setTextColor(Color.RED);
 
-        if (dcfAge.isChecked()) {
+            Log.i(TAG, "childrenSpinner: This Data is Required!");
+            return false;
+        } else {
+            ((TextView) childrenSpinner.getSelectedView()).setError(null);
+        }
+
+        /*if (dcfAge.isChecked()) {
 
 //          Days
             if (dcf0401.getText().toString().isEmpty()) {
@@ -537,7 +596,7 @@ public class SectionFActivity extends Activity {
             } else {
                 dcf0403.setError(null);
             }
-        }
+        }*/
 
 //          05
         if (dcf05.getText().toString().isEmpty()) {
@@ -689,20 +748,21 @@ public class SectionFActivity extends Activity {
 
         MainApp.mc = new MotherContract();
 
-        MainApp.mc.set_UUID(MainApp.fc.getUID());
-        MainApp.mc.setFormDate(MainApp.fc.getFormDate());
-        MainApp.mc.setDeviceId(MainApp.fc.getDeviceID());
-        MainApp.mc.setUser(MainApp.fc.getUser());
-        MainApp.mc.setChildID(MainApp.lstMothers.get(MainApp.position).getChild_id());
-        MainApp.mc.setMotherID(MainApp.lstMothers.get(MainApp.position).getMother_id());
-        MainApp.mc.setDssID(MainApp.fc.getDSSID());
+//        MainApp.mc.setDevicetagID(sharedPref.getString("tagName", null));
+        MainApp.mc.setFormDate(new SimpleDateFormat("dd-MM-yy HH:mm").format(new Date().getTime()));
+        MainApp.mc.setDeviceId(Settings.Secure.getString(getApplicationContext().getContentResolver(),
+                Settings.Secure.ANDROID_ID));
+        MainApp.mc.setUser(MainApp.userName);
+        MainApp.mc.setChildID(chMap.get(childrenSpinner.getSelectedItem().toString()).getDss_id_member());
+        MainApp.mc.setMotherID(MainApp.lstSelectedChildren.get(MainApp.motherPosition).getDss_id_member());
+        MainApp.mc.setDssID(MainApp.lstSelectedChildren.get(MainApp.motherPosition).getDss_id_hh());
 
         JSONObject sF = new JSONObject();
 
         // Edit Text
 
 //        A
-        sF.put("dcfa", MainApp.lstMothers.get(MainApp.position).getSerialm());
+        sF.put("dcfa", MainApp.motherPosition + 1);
 //        01
         sF.put("dcf01", dcf01.getText().toString());
 
@@ -718,20 +778,23 @@ public class SectionFActivity extends Activity {
         sF.put("dcf03", dcf03.getText().toString());
 
 //        04
-        if (dcfDob.isChecked()) {
+/*        if (dcfDob.isChecked()) {
             sF.put("dcf04", new SimpleDateFormat("dd-MM-yyyy").format(dcf04dob.getCalendarView().getDate()));
 
             sF.put("dcf04d", "");
             sF.put("dcf04m", "");
             sF.put("dcf04y", "");
-        }else {
+        } else {
 
             sF.put("dcf04", "");
 
             sF.put("dcf04d", dcf0401.getText().toString());
             sF.put("dcf04m", dcf0402.getText().toString());
             sF.put("dcf04y", dcf0403.getText().toString());
-        }
+        }*/
+
+        sF.put("dcf04", dcf04AgeDob.getText().toString());
+
 //        05
         sF.put("dcf05", dcf05.getText().toString());
 
@@ -800,7 +863,7 @@ public class SectionFActivity extends Activity {
             Toast.makeText(this, "Updating Database... Successful!", Toast.LENGTH_SHORT).show();
 
             MainApp.mc.setUID(
-                    (MainApp.fc.getDeviceID() + MainApp.mc.get_ID()));
+                    (MainApp.mc.getDeviceId() + MainApp.mc.get_ID()));
             db.updateMotherID();
             return true;
         } else {

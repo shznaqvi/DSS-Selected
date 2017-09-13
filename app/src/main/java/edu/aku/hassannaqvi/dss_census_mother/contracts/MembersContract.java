@@ -14,18 +14,20 @@ public class MembersContract {
 
     private final String projectName = "DSS Census";
     private String _ID = "";
-    private String _DATE = "";
     private String dss_id_hh = "";
+    private String dss_id_member = "";
+    private String name = "";
+    private String dob = "";
+    private String gender = "";
+    private String member_type = "";
+
+/*    private String _DATE = "";
     private String dss_id_f = "";
     private String dss_id_m = "";
     private String dss_id_h = "";
-    private String dss_id_member = "";
     private String prevs_dss_id_member = "";
     private String site_code = "";
-    private String name = "";
-    private String dob = "";
     private String age = "";
-    private String gender = "";
     private String is_head = "";
     private String relation_hh = "";
     private String current_status = "";
@@ -33,8 +35,8 @@ public class MembersContract {
     private String dod = "";
     private String m_status = "";
     private String education = "";
-    private String occupation = "";
-    private String member_type = "";
+    private String occupation = "";*/
+
 
 
     public MembersContract() {
@@ -42,18 +44,20 @@ public class MembersContract {
 
     public MembersContract(MembersContract mc) {
         this._ID =  mc.get_ID();
-        this._DATE =  mc.get_DATE();
         this.dss_id_hh =  mc.getDss_id_hh();
+        this.dss_id_member =  mc.getDss_id_member();
+        this.name =  mc.getName();
+        this.dob =  mc.getDob();
+        this.gender =  mc.getGender();
+        this.member_type =  mc.getMember_type();
+
+        /*this._DATE =  mc.get_DATE();
         this.dss_id_f =  mc.getDss_id_f();
         this.dss_id_m =  mc.getDss_id_m();
         this.dss_id_h =  mc.getDss_id_h();
-        this.dss_id_member =  mc.getDss_id_member();
         this.prevs_dss_id_member =  mc.getPrevs_dss_id_member();
         this.site_code =  mc.getSite_code();
-        this.name =  mc.getName();
-        this.dob =  mc.getDob();
         this.age =  mc.getAge();
-        this.gender =  mc.getGender();
         this.is_head =  mc.getIs_head();
         this.relation_hh =  mc.getRelation_hh();
         this.current_status =  mc.getCurrent_status();
@@ -61,8 +65,7 @@ public class MembersContract {
         this.dod =  mc.getDod();
         this.m_status =  mc.getM_status();
         this.education =  mc.getEducation();
-        this.occupation =  mc.getOccupation();
-        this.member_type =  mc.getMember_type();
+        this.occupation =  mc.getOccupation();*/
     }
 
     public String get_ID() {
@@ -77,13 +80,13 @@ public class MembersContract {
         return projectName;
     }
 
-    public String get_DATE() {
+/*    public String get_DATE() {
         return _DATE;
     }
 
     public void set_DATE(String _DATE) {
         this._DATE = _DATE;
-    }
+    }*/
 
     public String getDss_id_hh() {
         return dss_id_hh;
@@ -93,7 +96,7 @@ public class MembersContract {
         this.dss_id_hh = dss_id_hh;
     }
 
-    public String getDss_id_f() {
+/*    public String getDss_id_f() {
         return dss_id_f;
     }
 
@@ -115,7 +118,7 @@ public class MembersContract {
 
     public void setDss_id_h(String dss_id_h) {
         this.dss_id_h = dss_id_h;
-    }
+    }*/
 
     public String getDss_id_member() {
         return dss_id_member;
@@ -125,7 +128,7 @@ public class MembersContract {
         this.dss_id_member = dss_id_member;
     }
 
-    public String getPrevs_dss_id_member() {
+/*    public String getPrevs_dss_id_member() {
         return prevs_dss_id_member;
     }
 
@@ -139,7 +142,7 @@ public class MembersContract {
 
     public void setSite_code(String site_code) {
         this.site_code = site_code;
-    }
+    }*/
 
     public String getName() {
         return name;
@@ -157,13 +160,13 @@ public class MembersContract {
         this.dob = dob;
     }
 
-    public String getAge() {
+/*    public String getAge() {
         return age;
     }
 
     public void setAge(String age) {
         this.age = age;
-    }
+    }*/
 
     public String getGender() {
         return gender;
@@ -173,7 +176,7 @@ public class MembersContract {
         this.gender = gender;
     }
 
-    public String getIs_head() {
+/*    public String getIs_head() {
         return is_head;
     }
 
@@ -237,7 +240,7 @@ public class MembersContract {
 
     public void setOccupation(String occupation) {
         this.occupation = occupation;
-    }
+    }*/
 
     public String getMember_type() {
         return member_type;
@@ -249,19 +252,20 @@ public class MembersContract {
 
     public MembersContract Sync(JSONObject jsonObject) throws JSONException {
 
-        this._ID= jsonObject.getString(singleMember.COLUMN_ID);
-        this._DATE = jsonObject.getString(singleMember.COLUMN_DATE);
         this.dss_id_hh= jsonObject.getString(singleMember.COLUMN_DSS_ID_HH);
-        this.dss_id_f= jsonObject.getString(singleMember.COLUMN_DSS_ID_F);
-        this.dss_id_m= jsonObject.getString(singleMember.COLUMN_DSS_ID_M);
-        this.dss_id_h= jsonObject.getString(singleMember.COLUMN_DSS_ID_H);
         this.dss_id_member= jsonObject.getString(singleMember.COLUMN_DSS_ID_MEMBER);
-        this.prevs_dss_id_member= jsonObject.getString(singleMember.COLUMN_PREVS_DSS_ID_MEMBER);
-        this.site_code= jsonObject.getString(singleMember.COLUMN_SITE_CODE);
+        this.member_type= jsonObject.getString(singleMember.COLUMN_MEMBER_TYPE);
         this.name= jsonObject.getString(singleMember.COLUMN_NAME);
         this.dob= jsonObject.getString(singleMember.COLUMN_DOB);
-        this.age= jsonObject.getString(singleMember.COLUMN_AGE);
         this.gender= jsonObject.getString(singleMember.COLUMN_GENDER);
+
+        /*this.dss_id_f= jsonObject.getString(singleMember.COLUMN_DSS_ID_F);
+        this.dss_id_m= jsonObject.getString(singleMember.COLUMN_DSS_ID_M);
+        this.dss_id_h= jsonObject.getString(singleMember.COLUMN_DSS_ID_H);
+        this._DATE = jsonObject.getString(singleMember.COLUMN_DATE);
+        this.prevs_dss_id_member= jsonObject.getString(singleMember.COLUMN_PREVS_DSS_ID_MEMBER);
+        this.site_code= jsonObject.getString(singleMember.COLUMN_SITE_CODE);
+        this.age= jsonObject.getString(singleMember.COLUMN_AGE);
         this.is_head= jsonObject.getString(singleMember.COLUMN_IS_HEAD);
         this.relation_hh= jsonObject.getString(singleMember.COLUMN_RELATION_HH);
         this.current_status= jsonObject.getString(singleMember.COLUMN_CURRENT_STATUS);
@@ -269,28 +273,28 @@ public class MembersContract {
         this.dod= jsonObject.getString(singleMember.COLUMN_DOD);
         this.m_status= jsonObject.getString(singleMember.COLUMN_M_STATUS);
         this.education= jsonObject.getString(singleMember.COLUMN_EDUCATION);
-        this.occupation= jsonObject.getString(singleMember.COLUMN_OCCUPATION);
-        this.member_type= jsonObject.getString(singleMember.COLUMN_MEMBER_TYPE);
+        this.occupation= jsonObject.getString(singleMember.COLUMN_OCCUPATION);*/
 
         return this;
-
     }
 
     public MembersContract Hydrate(Cursor cursor) {
 
         this._ID = cursor.getString(cursor.getColumnIndex(singleMember.COLUMN_ID));
-        this._DATE = cursor.getString(cursor.getColumnIndex(singleMember.COLUMN_DATE));
         this.dss_id_hh = cursor.getString(cursor.getColumnIndex(singleMember.COLUMN_DSS_ID_HH));
-        this.dss_id_f = cursor.getString(cursor.getColumnIndex(singleMember.COLUMN_DSS_ID_F));
-        this.dss_id_m = cursor.getString(cursor.getColumnIndex(singleMember.COLUMN_DSS_ID_M));
-        this.dss_id_h = cursor.getString(cursor.getColumnIndex(singleMember.COLUMN_DSS_ID_H));
         this.dss_id_member = cursor.getString(cursor.getColumnIndex(singleMember.COLUMN_DSS_ID_MEMBER));
-        this.prevs_dss_id_member = cursor.getString(cursor.getColumnIndex(singleMember.COLUMN_PREVS_DSS_ID_MEMBER));
-        this.site_code = cursor.getString(cursor.getColumnIndex(singleMember.COLUMN_SITE_CODE));
         this.name = cursor.getString(cursor.getColumnIndex(singleMember.COLUMN_NAME));
         this.dob = cursor.getString(cursor.getColumnIndex(singleMember.COLUMN_DOB));
-        this.age = cursor.getString(cursor.getColumnIndex(singleMember.COLUMN_AGE));
         this.gender = cursor.getString(cursor.getColumnIndex(singleMember.COLUMN_GENDER));
+        this.member_type = cursor.getString(cursor.getColumnIndex(singleMember.COLUMN_MEMBER_TYPE));
+
+/*        this.dss_id_f = cursor.getString(cursor.getColumnIndex(singleMember.COLUMN_DSS_ID_F));
+        this.dss_id_m = cursor.getString(cursor.getColumnIndex(singleMember.COLUMN_DSS_ID_M));
+        this.dss_id_h = cursor.getString(cursor.getColumnIndex(singleMember.COLUMN_DSS_ID_H));
+        this._DATE = cursor.getString(cursor.getColumnIndex(singleMember.COLUMN_DATE));
+        this.prevs_dss_id_member = cursor.getString(cursor.getColumnIndex(singleMember.COLUMN_PREVS_DSS_ID_MEMBER));
+        this.site_code = cursor.getString(cursor.getColumnIndex(singleMember.COLUMN_SITE_CODE));
+        this.age = cursor.getString(cursor.getColumnIndex(singleMember.COLUMN_AGE));
         this.is_head = cursor.getString(cursor.getColumnIndex(singleMember.COLUMN_IS_HEAD));
         this.relation_hh = cursor.getString(cursor.getColumnIndex(singleMember.COLUMN_RELATION_HH));
         this.current_status = cursor.getString(cursor.getColumnIndex(singleMember.COLUMN_CURRENT_STATUS));
@@ -298,8 +302,8 @@ public class MembersContract {
         this.dod = cursor.getString(cursor.getColumnIndex(singleMember.COLUMN_DOD));
         this.m_status = cursor.getString(cursor.getColumnIndex(singleMember.COLUMN_M_STATUS));
         this.education = cursor.getString(cursor.getColumnIndex(singleMember.COLUMN_EDUCATION));
-        this.occupation = cursor.getString(cursor.getColumnIndex(singleMember.COLUMN_OCCUPATION));
-        this.member_type = cursor.getString(cursor.getColumnIndex(singleMember.COLUMN_MEMBER_TYPE));
+        this.occupation = cursor.getString(cursor.getColumnIndex(singleMember.COLUMN_OCCUPATION));*/
+
 
         return this;
 
@@ -311,18 +315,20 @@ public class MembersContract {
         JSONObject json = new JSONObject();
 
         json.put(singleMember.COLUMN_ID, this._ID == null ? JSONObject.NULL : this._ID);
-        json.put(singleMember.COLUMN_DATE, this._DATE == null ? JSONObject.NULL : this._DATE);
         json.put(singleMember.COLUMN_DSS_ID_HH, this.dss_id_hh == null ? JSONObject.NULL : this.dss_id_hh);
+        json.put(singleMember.COLUMN_MEMBER_TYPE, this.member_type == null ? JSONObject.NULL : this.member_type);
+        json.put(singleMember.COLUMN_DSS_ID_MEMBER, this.dss_id_member == null ? JSONObject.NULL : this.dss_id_member);
+        json.put(singleMember.COLUMN_DOB, this.dob == null ? JSONObject.NULL : this.dob);
+        json.put(singleMember.COLUMN_NAME, this.name == null ? JSONObject.NULL : this.name);
+        json.put(singleMember.COLUMN_GENDER, this.gender == null ? JSONObject.NULL : this.gender);
+
+/*        json.put(singleMember.COLUMN_DATE, this._DATE == null ? JSONObject.NULL : this._DATE);
+        json.put(singleMember.COLUMN_AGE, this.age == null ? JSONObject.NULL : this.age);
         json.put(singleMember.COLUMN_DSS_ID_F, this.dss_id_f == null ? JSONObject.NULL : this.dss_id_f);
         json.put(singleMember.COLUMN_DSS_ID_M, this.dss_id_m == null ? JSONObject.NULL : this.dss_id_m);
         json.put(singleMember.COLUMN_DSS_ID_H, this.dss_id_h == null ? JSONObject.NULL : this.dss_id_h);
-        json.put(singleMember.COLUMN_DSS_ID_MEMBER, this.dss_id_member == null ? JSONObject.NULL : this.dss_id_member);
         json.put(singleMember.COLUMN_PREVS_DSS_ID_MEMBER, this.prevs_dss_id_member == null ? JSONObject.NULL : this.prevs_dss_id_member);
         json.put(singleMember.COLUMN_SITE_CODE, this.site_code == null ? JSONObject.NULL : this.site_code);
-        json.put(singleMember.COLUMN_NAME, this.name == null ? JSONObject.NULL : this.name);
-        json.put(singleMember.COLUMN_DOB, this.dob == null ? JSONObject.NULL : this.dob);
-        json.put(singleMember.COLUMN_AGE, this.age == null ? JSONObject.NULL : this.age);
-        json.put(singleMember.COLUMN_GENDER, this.gender == null ? JSONObject.NULL : this.gender);
         json.put(singleMember.COLUMN_IS_HEAD, this.is_head == null ? JSONObject.NULL : this.is_head);
         json.put(singleMember.COLUMN_RELATION_HH, this.relation_hh == null ? JSONObject.NULL : this.relation_hh);
         json.put(singleMember.COLUMN_CURRENT_STATUS, this.current_status == null ? JSONObject.NULL : this.current_status);
@@ -330,8 +336,8 @@ public class MembersContract {
         json.put(singleMember.COLUMN_DOD, this.dod == null ? JSONObject.NULL : this.dod);
         json.put(singleMember.COLUMN_M_STATUS, this.m_status == null ? JSONObject.NULL : this.m_status);
         json.put(singleMember.COLUMN_EDUCATION, this.education == null ? JSONObject.NULL : this.education);
-        json.put(singleMember.COLUMN_OCCUPATION, this.occupation == null ? JSONObject.NULL : this.occupation);
-        json.put(singleMember.COLUMN_MEMBER_TYPE, this.member_type == null ? JSONObject.NULL : this.member_type);
+        json.put(singleMember.COLUMN_OCCUPATION, this.occupation == null ? JSONObject.NULL : this.occupation);*/
+
 
 
         return json;
@@ -339,22 +345,24 @@ public class MembersContract {
 
     public static abstract class singleMember implements BaseColumns {
 
-        public static final String TABLE_NAME = "members";
+        public static final String TABLE_NAME = "selectedMembers";
         public static final String COLUMN_NAME_NULLABLE = "NULLHACK";
 
         public static final String COLUMN_ID = "_id";
-        public static final String COLUMN_DATE = "_date";
         public static final String COLUMN_DSS_ID_HH = "dss_id_hh";
-        public static final String COLUMN_DSS_ID_F = "dss_id_f";
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_DSS_ID_MEMBER = "dss_id_member";
+        public static final String COLUMN_MEMBER_TYPE = "member_type";
+        public static final String COLUMN_GENDER = "gender";
+        public static final String COLUMN_DOB = "dob";
+
+/*        public static final String COLUMN_DSS_ID_F = "dss_id_f";
         public static final String COLUMN_DSS_ID_M = "dss_id_m";
         public static final String COLUMN_DSS_ID_H = "dss_id_h";
-        public static final String COLUMN_DSS_ID_MEMBER = "dss_id_member";
+        public static final String COLUMN_DATE = "_date";
         public static final String COLUMN_PREVS_DSS_ID_MEMBER = "prevs_dss_id_member";
         public static final String COLUMN_SITE_CODE = "site_code";
-        public static final String COLUMN_NAME = "name";
-        public static final String COLUMN_DOB = "dob";
         public static final String COLUMN_AGE = "age";
-        public static final String COLUMN_GENDER = "gender";
         public static final String COLUMN_IS_HEAD = "is_head";
         public static final String COLUMN_RELATION_HH = "relation_hh";
         public static final String COLUMN_CURRENT_STATUS = "current_status";
@@ -362,10 +370,10 @@ public class MembersContract {
         public static final String COLUMN_DOD = "dod";
         public static final String COLUMN_M_STATUS = "m_status";
         public static final String COLUMN_EDUCATION = "education";
-        public static final String COLUMN_OCCUPATION = "occupation";
-        public static final String COLUMN_MEMBER_TYPE = "member_type";
+        public static final String COLUMN_OCCUPATION = "occupation";*/
 
-        public static final String _URI = "getfamilymembers.php";
+
+        public static final String _URI = "selected.php";
 
     }
 }

@@ -44,7 +44,7 @@ public class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        // - get element from your dataset at this position
+        // - get element from your dataset at this motherPosition
         // - replace the contents of the view with that element
         holder.date.setText(fc.get(position).getFormDate().toString());
         holder.cluster.setText(fc.get(position).getDSSID().toString());

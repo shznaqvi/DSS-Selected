@@ -7,20 +7,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -49,7 +47,7 @@ public class SectionIActivity extends Activity implements RadioGroup.OnCheckedCh
 //    @BindView(R.id.dci04)
 //    EditText dci04;
     @BindView(R.id.dci05)
-    DatePicker dci05;
+    TextView dci05;
     @BindView(R.id.dci06)
     RadioGroup dci06;
     @BindView(R.id.dci0601)
@@ -414,13 +412,28 @@ public class SectionIActivity extends Activity implements RadioGroup.OnCheckedCh
         setContentView(R.layout.activity_section_i);
         ButterKnife.bind(this);
 
+//        Fill Fields
+        dci01.setText(MainApp.lstSelectedChildren.get(MainApp.childPosition - 1).getName());
+        dci01.setEnabled(false);
 
-        if (MainApp.lstMothers.get(MainApp.position).getAgey().equals("")) {
+        dci02.check(MainApp.lstSelectedChildren.get(MainApp.childPosition - 1).getGender().equals("1") ? dci0201.getId() : dci0202.getId());
+
+        if (MainApp.lstSelectedChildren.get(MainApp.childPosition - 1).getGender().equals("1")){
+            dci0201.setEnabled(true);
+            dci0202.setEnabled(false);
+        }else {
+            dci0201.setEnabled(false);
+            dci0202.setEnabled(true);
+        }
+
+        dci05.setText(MainApp.lstSelectedChildren.get(MainApp.childPosition - 1).getDob());
+
+        /*if (MainApp.lstSelectedChildren.get(MainApp.motherPosition).getAgey().equals("")) {
             try {
-                if (MainApp.monthsBetweenDates(new SimpleDateFormat("dd-MM-yy").parse(MainApp.lstMothers.get(MainApp.position).getDate_of_birth()),
+                if (MainApp.monthsBetweenDates(new SimpleDateFormat("dd-MM-yy").parse(MainApp.lstSelectedChildren.get(MainApp.motherPosition).getDate_of_birth()),
                         new Date()) < MainApp.selectedCHILD) {
 
-                    String[] dt = MainApp.lstMothers.get(MainApp.position).getDate_of_birth().split("-");
+                    String[] dt = MainApp.lstSelectedChildren.get(MainApp.motherPosition).getDate_of_birth().split("-");
 
                     dci05.updateDate(Integer.parseInt(dt[2]), Integer.parseInt(dt[1]) - 1, Integer.parseInt(dt[0]));
 
@@ -432,20 +445,19 @@ public class SectionIActivity extends Activity implements RadioGroup.OnCheckedCh
                 e.printStackTrace();
             }
         } else {
-            if (Integer.parseInt(MainApp.lstMothers.get(MainApp.position).getAgey())*12 +
-                    Integer.parseInt(MainApp.lstMothers.get(MainApp.position).getAgem()) < MainApp.selectedCHILD){
-                dci07y.setText(MainApp.lstMothers.get(MainApp.position).getAgey());
-                dci07m.setText(MainApp.lstMothers.get(MainApp.position).getAgem());
-                dci07d.setText(MainApp.lstMothers.get(MainApp.position).getAged());
+            if (Integer.parseInt(MainApp.lstSelectedChildren.get(MainApp.motherPosition).getAgey())*12 +
+                    Integer.parseInt(MainApp.lstSelectedChildren.get(MainApp.motherPosition).getAgem()) < MainApp.selectedCHILD){
+                dci07y.setText(MainApp.lstSelectedChildren.get(MainApp.motherPosition).getAgey());
+                dci07m.setText(MainApp.lstSelectedChildren.get(MainApp.motherPosition).getAgem());
+                dci07d.setText(MainApp.lstSelectedChildren.get(MainApp.motherPosition).getAged());
             }else {
                 startActivity(new Intent(this, SectionJActivity.class));
             }
-        }
+        }*/
 
 
-        dci05.setMaxDate(new Date().getTime());
-        dci05.setMinDate((new Date().getTime() - ((MainApp.MILLISECONDS_IN_YEAR) + (MainApp.MILLISECONDS_IN_YEAR) - (MainApp.MILLISECONDS_IN_MONTH) + MainApp.MILLISECONDS_IN_DAY)));
-//        dob = new SimpleDateFormat("dd-MM-yyyy").format(dci05.getCalendarView().getDate());
+        /*dci05.setMaxDate(new Date().getTime());
+        dci05.setMinDate((new Date().getTime() - ((MainApp.MILLISECONDS_IN_YEAR) + (MainApp.MILLISECONDS_IN_YEAR) - (MainApp.MILLISECONDS_IN_MONTH) + MainApp.MILLISECONDS_IN_DAY)));*/
 
         // ============= Q 18 B =============
         dci17b.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -549,12 +561,14 @@ public class SectionIActivity extends Activity implements RadioGroup.OnCheckedCh
         });
 
 
+/*
 //        Fill Info
 
-        dci01.setText(MainApp.lstMothers.get(MainApp.position).getChild_name());
+        dci01.setText(MainApp.lstSelectedChildren.get(MainApp.motherPosition).getChild_name());
         dci01.setEnabled(false);
 
-        dci02.check(MainApp.lstMothers.get(MainApp.position).getGender().equals("1") ? dci0201.getId() : dci0202.getId());
+        dci02.check(MainApp.lstSelectedChildren.get(MainApp.motherPosition).getGender().equals("1") ? dci0201.getId() : dci0202.getId());
+*/
 
 
     }
@@ -612,9 +626,9 @@ public class SectionIActivity extends Activity implements RadioGroup.OnCheckedCh
 
         sI.put("dci01", dci01.getText().toString());
         sI.put("dci02", dci0201.isChecked() ? "1" : dci0202.isChecked() ? "2" : "0");
-        sI.put("dci03", MainApp.lstMothers.get(MainApp.position).getSerial());
-        sI.put("dci04", MainApp.lstMothers.get(MainApp.position).getSerialm());
-        sI.put("dci05", new SimpleDateFormat("dd-MM-yyyy").format(dci05.getCalendarView().getDate()));
+        sI.put("dci03", MainApp.childPosition);
+        sI.put("dci04", MainApp.motherPosition + 1);
+        sI.put("dci05", dci05.getText().toString());
         sI.put("dci06", dci0601.isChecked() ? "1" : dci0602.isChecked() ? "2" : dci0699.isChecked() ? "99" : "0");
         /*sI.put("dci07d", dci07d.getText().toString());
         sI.put("dci07m", dci07m.getText().toString());

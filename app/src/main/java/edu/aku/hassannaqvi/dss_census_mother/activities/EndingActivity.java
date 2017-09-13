@@ -64,7 +64,7 @@ public class EndingActivity extends Activity {
             }
             if (UpdateDB()) {
 
-                MainApp.familyMembersList.clear();
+                MainApp.selectedMothersList.clear();
                 MainApp.memFlag = 0;
 
                 MainApp.NoMembersCount = 0;
@@ -73,13 +73,13 @@ public class EndingActivity extends Activity {
                 MainApp.NoBoyCount = 0;
                 MainApp.NoGirlCount = 0;
 
-                MainApp.TotalMembersCount = 0;
+                MainApp.TotalMWRACount = 0;
                 MainApp.TotalMaleCount = 0;
                 MainApp.TotalFemaleCount = 0;
                 MainApp.TotalBoyCount = 0;
                 MainApp.TotalGirlCount = 0;
 
-//    Total No of Alive members got from Section B
+//    Total No of Alive selectedMothers got from Section B
                 MainApp.currentStatusCount = 0;
                 MainApp.currentDeceasedCheck = 0;
                 MainApp.currentMotherCheck = 0;

@@ -33,15 +33,66 @@
                 android:textSize="30sp" />
 
             <TextView
-                android:id="@+id/lblNoMother"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="No Mother Found"
-                android:background="@color/dullBlack"
-                android:textSize="20sp" />
+                android:layout_marginTop="16dp"
+                android:background="@color/colorPrimary"
+                android:text="@string/dca03"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@android:color/white" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/dca03"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-"
+                    android:inputType="text"
+                    android:maxLength="11" />
+
+                <Button
+                    android:id="@+id/checkSelectedHHID"
+                    style="@style/buttons"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:elevation="2dp"
+                    android:padding="5dp"
+                    android:text="CHECK"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/membersExists"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/lblNoMother"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:background="@color/gray"
+                    android:padding="2dp"
+                    android:text="Eligible Women Found = 0"
+                    android:textAlignment="center"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@android:color/white" />
+
+
+            </LinearLayout>
+
 
             <ListView
                 android:id="@+id/motherList"
@@ -64,6 +115,7 @@
                     android:background="@color/pink_100"
                     android:onClick="endInterview"
                     android:text="@string/end_interview"
+                    android:visibility="gone"
                     android:textColor="#ff1e1e"/>
 
 
