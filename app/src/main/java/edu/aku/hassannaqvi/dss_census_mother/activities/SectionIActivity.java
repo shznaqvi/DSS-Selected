@@ -577,7 +577,7 @@ public class SectionIActivity extends Activity implements RadioGroup.OnCheckedCh
     void onBtnEndClick() {
         Toast.makeText(this, "Not Processing This Section", Toast.LENGTH_SHORT).show();
 //        finish();
-        MainApp.finishActivity(this, this);
+        MainApp.endActivity(this, this);
     }
 
 

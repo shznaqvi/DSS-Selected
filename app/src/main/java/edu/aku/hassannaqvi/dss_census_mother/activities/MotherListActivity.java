@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -28,11 +31,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import edu.aku.hassannaqvi.dss_census_mother.R;
-import edu.aku.hassannaqvi.dss_census_mother.contracts.FormsContract;
 import edu.aku.hassannaqvi.dss_census_mother.contracts.MembersContract;
+import edu.aku.hassannaqvi.dss_census_mother.contracts.MotherContract;
 import edu.aku.hassannaqvi.dss_census_mother.core.DatabaseHelper;
 import edu.aku.hassannaqvi.dss_census_mother.core.MainApp;
-import edu.aku.hassannaqvi.dss_census_mother.otherClasses.MothersLst;
 
 public class MotherListActivity extends Activity {
     @BindView(R.id.membersExists)
@@ -41,10 +43,13 @@ public class MotherListActivity extends Activity {
     EditText dca03;
     @BindView(R.id.motherList)
     ListView motherList;
-    //    @BindView(R.id.btn_End)
-//    Button btn_End;
+    @BindView(R.id.btn_End)
+    Button btn_End;
     @BindView(R.id.lblNoMother)
     TextView lblNoMother;
+
+    @BindView(R.id.checkSelectedHHID)
+    Button checkSelectedHHID;
 
     Collection<MembersContract> selectedMothers;
     DatabaseHelper db;
@@ -63,9 +68,8 @@ public class MotherListActivity extends Activity {
         dca03.setText(MainApp.regionDss);
         dca03.setSelection(dca03.getText().length());
 
-        MainApp.fc =new FormsContract();
-
         db = new DatabaseHelper(this);
+
         try {
             /*Collection<MothersLst> mo = db.getMotherByUUID(MainApp.fc.getUID());
 
@@ -162,7 +166,7 @@ public class MotherListActivity extends Activity {
     void onCheckSelectedHHIDClick() {
 
         membersExists.setVisibility(View.VISIBLE);
-        MainApp.selectedMothersList = new ArrayList<>();
+        MainApp.lstSelectedMothers = new ArrayList<>();
 
         if (!dca03.getText().toString().isEmpty() && dca03.getText().length() == 11) {
             dca03.setError(null);
@@ -174,20 +178,20 @@ public class MotherListActivity extends Activity {
 
                 for (MembersContract ec : selectedMothers) {
                     if (MainApp.yearsBetweenDates(ec.getDob())) {
-                        MainApp.selectedMothersList.add(new MembersContract(ec));
+                        MainApp.lstSelectedMothers.add(new MembersContract(ec));
                         mwras++;
                     }
                 }
 
-                listAdapter motherAdapter = new listAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, MainApp.selectedMothersList);
+                listAdapter motherAdapter = new listAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, MainApp.lstSelectedMothers);
 
                 motherList.setAdapter(motherAdapter);
 
                 lblNoMother.setText("Mothers found " + selectedMothers.size() + " - MWRAs : " + mwras);
 
                 Toast.makeText(this, "Mothers Found", Toast.LENGTH_LONG).show();
-                MainApp.currentStatusCount = MainApp.selectedMothersList.size();
-                MainApp.TotalMWRACount = MainApp.selectedMothersList.size();
+                MainApp.currentMotherStatusCount = MainApp.lstSelectedMothers.size();
+                MainApp.TotalMWRACount = MainApp.lstSelectedMothers.size();
 
             } else {
 
@@ -274,7 +278,7 @@ public class MotherListActivity extends Activity {
                             new Runnable() {
                                 public void run() {
                                     // On complete call either onLoginSuccess or onLoginFailed
-                                    checkChildrens(list.get(position).getDss_id_hh(),list.get(position).getDss_id_member(),position);
+                                    checkChildrens(list.get(position).getDss_id_hh(), list.get(position).getDss_id_member(), position);
                                 }
                             }, 1000);
 
@@ -285,7 +289,7 @@ public class MotherListActivity extends Activity {
             return v;
         }
 
-        public void checkChildrens(String dssID, String member_id,int position) {
+        public void checkChildrens(String dssID, String member_id, int position) {
 
             Collection<MembersContract> children = db.getSelectedChildByMotherID(dssID, member_id);
 
@@ -302,17 +306,44 @@ public class MotherListActivity extends Activity {
 
                 MainApp.totalChild = children.size();
 
-                if (MainApp.lstSelectedChildren.size() > 0){
+                if (MainApp.lstSelectedChildren.size() > 0) {
+
+                    SharedPreferences sharedPref = getSharedPreferences("tagName", MODE_PRIVATE);
+
+                    MainApp.mc = new MotherContract();
+                    MainApp.mc.setDevicetagID(sharedPref.getString("tagName", null));
+                    MainApp.mc.setFormDate(new SimpleDateFormat("dd-MM-yy HH:mm").format(new Date().getTime()));
+                    MainApp.mc.setDeviceId(Settings.Secure.getString(getApplicationContext().getContentResolver(),
+                            Settings.Secure.ANDROID_ID));
+                    MainApp.mc.setUser(MainApp.userName);
+                    MainApp.mc.setMotherID(MainApp.lstSelectedMothers.get(MainApp.motherPosition).getDss_id_member());
+                    MainApp.mc.setDssID(MainApp.lstSelectedMothers.get(MainApp.motherPosition).getDss_id_hh());
+
+                    MainApp.currentMotherStatusCount--;
+
                     Intent cb = new Intent(getApplicationContext(), SectionFActivity.class);
                     cb.putExtra("motherPosition", position);
                     startActivity(cb);
                 }
             }
 
-             progressDialog.dismiss();
+            progressDialog.dismiss();
 
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        if (MainApp.endFlag) {
+            btn_End.setVisibility(View.VISIBLE);
+            dca03.setEnabled(false);
+
+            checkSelectedHHID.setEnabled(false);
+
+            motherList.setVisibility(View.VISIBLE);
+        }
+
+    }
 }

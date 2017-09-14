@@ -12,7 +12,7 @@ import org.json.JSONObject;
 
 public class FormsContract {
 
-    private final String projectName = "DSS Census";
+    private final String projectName = "DSS Selected";
     //private final String surveyType = "SN";
     private String _ID = "";
     private String _UID = "";
@@ -136,7 +136,7 @@ public class FormsContract {
 //        json.put(FormsTable.COLUMN_SH, this.sH.equals("") ? JSONObject.NULL : new JSONObject(this.sH));
 //        json.put(FormsTable.COLUMN_SI, this.sI.equals("") ? JSONObject.NULL : new JSONObject(this.sI));
 //        json.put(FormsTable.COLUMN_SJ, this.sJ.equals("") ? JSONObject.NULL : new JSONObject(this.sJ));
-//        json.put(FormsTable.COLUMN_SK, this.sK.equals("") ? JSONObject.NULL : new JSONObject(this.sK));
+//        json.put(FormsTable.COLUMN_SL, this.sK.equals("") ? JSONObject.NULL : new JSONObject(this.sK));
         json.put(FormsTable.COLUMN_SL, this.sL.equals("") ? JSONObject.NULL : new JSONObject(this.sL));
         json.put(FormsTable.COLUMN_SM, this.sM.equals("") ? JSONObject.NULL : new JSONObject(this.sM));
         json.put(FormsTable.COLUMN_GPSLAT, this.gpsLat == null ? JSONObject.NULL : this.gpsLat);

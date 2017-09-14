@@ -371,7 +371,10 @@ public class SectionFActivity extends Activity {
 
 //        finish();
         Toast.makeText(this, "Starting Form Ending Section", Toast.LENGTH_SHORT).show();
-        MainApp.finishActivity(this, this);
+
+        if (UpdateDB()) {
+            MainApp.endActivity(this, this);
+        }
     }
 
     @OnClick(R.id.btn_Continue)
@@ -744,18 +747,7 @@ public class SectionFActivity extends Activity {
     private void SaveDraft() throws JSONException {
         Toast.makeText(this, "Saving Draft for  This Section", Toast.LENGTH_SHORT).show();
 
-        SharedPreferences sharedPref = getSharedPreferences("tagName", MODE_PRIVATE);
-
-        MainApp.mc = new MotherContract();
-
-//        MainApp.mc.setDevicetagID(sharedPref.getString("tagName", null));
-        MainApp.mc.setFormDate(new SimpleDateFormat("dd-MM-yy HH:mm").format(new Date().getTime()));
-        MainApp.mc.setDeviceId(Settings.Secure.getString(getApplicationContext().getContentResolver(),
-                Settings.Secure.ANDROID_ID));
-        MainApp.mc.setUser(MainApp.userName);
         MainApp.mc.setChildID(chMap.get(childrenSpinner.getSelectedItem().toString()).getDss_id_member());
-        MainApp.mc.setMotherID(MainApp.lstSelectedChildren.get(MainApp.motherPosition).getDss_id_member());
-        MainApp.mc.setDssID(MainApp.lstSelectedChildren.get(MainApp.motherPosition).getDss_id_hh());
 
         JSONObject sF = new JSONObject();
 

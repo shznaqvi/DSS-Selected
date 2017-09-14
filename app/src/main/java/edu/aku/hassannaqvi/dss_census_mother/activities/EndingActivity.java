@@ -42,12 +42,14 @@ public class EndingActivity extends Activity {
             dcstatus01.setEnabled(true);
             dcstatus02.setEnabled(false);
 
+            MainApp.endFlag = false;
+
         } else {
             //fldGrpmn0823Reason.setVisibility(View.GONE);
             dcstatus01.setEnabled(false);
             dcstatus02.setEnabled(true);
 
-
+            MainApp.endFlag = true;
         }
 
     }
@@ -64,39 +66,42 @@ public class EndingActivity extends Activity {
             }
             if (UpdateDB()) {
 
-                MainApp.selectedMothersList.clear();
-                MainApp.memFlag = 0;
-
-                MainApp.NoMembersCount = 0;
-                MainApp.NoMaleCount = 0;
-                MainApp.NoFemaleCount = 0;
-                MainApp.NoBoyCount = 0;
-                MainApp.NoGirlCount = 0;
-
-                MainApp.TotalMWRACount = 0;
-                MainApp.TotalMaleCount = 0;
-                MainApp.TotalFemaleCount = 0;
-                MainApp.TotalBoyCount = 0;
-                MainApp.TotalGirlCount = 0;
-
-//    Total No of Alive selectedMothers got from Section B
-                MainApp.currentStatusCount = 0;
-                MainApp.currentDeceasedCheck = 0;
-                MainApp.currentMotherCheck = 0;
-
-                MainApp.selectedPos = -1;
-
-                MainApp.randID = 1;
-
-                MainApp.isRsvp = false;
-                MainApp.isHead = false;
-
-
                 finish();
 
-                Intent endSec = new Intent(this, MainActivity.class);
-                endSec.putExtra("complete", false);
-                startActivity(endSec);
+                if (!MainApp.endFlag || MainApp.currentMotherStatusCount == 0) {
+
+                    MainApp.lstSelectedMothers.clear();
+                    MainApp.memFlag = 0;
+
+                    MainApp.NoMembersCount = 0;
+                    MainApp.NoMaleCount = 0;
+                    MainApp.NoFemaleCount = 0;
+                    MainApp.NoBoyCount = 0;
+                    MainApp.NoGirlCount = 0;
+
+                    MainApp.TotalMWRACount = 0;
+                    MainApp.TotalMaleCount = 0;
+                    MainApp.TotalFemaleCount = 0;
+                    MainApp.TotalBoyCount = 0;
+                    MainApp.TotalGirlCount = 0;
+
+//    Total No of Alive selectedMothers got from Section B
+                    MainApp.currentMotherStatusCount = 0;
+                    MainApp.currentDeceasedCheck = 0;
+                    MainApp.currentMotherCheck = 0;
+
+                    MainApp.selectedPos = -1;
+
+                    MainApp.randID = 1;
+
+                    MainApp.isRsvp = false;
+                    MainApp.isHead = false;
+
+                    MainApp.endFlag = false;
+
+                    Intent endSec = new Intent(this, MainActivity.class);
+                    startActivity(endSec);
+                }
             } else {
                 Toast.makeText(this, "Failed to Update Database!", Toast.LENGTH_SHORT).show();
             }
@@ -106,7 +111,7 @@ public class EndingActivity extends Activity {
     private void SaveDraft() throws JSONException {
         Toast.makeText(this, "Saving Draft for  This Section", Toast.LENGTH_SHORT).show();
 
-        MainApp.fc.setIstatus(dcstatus01.isChecked() ? "1" : dcstatus02.isChecked() ? "2" : "0");
+        MainApp.mc.setIstatus(dcstatus01.isChecked() ? "1" : dcstatus02.isChecked() ? "2" : "0");
 
         Toast.makeText(this, "Validation Successful! - Saving Draft...", Toast.LENGTH_SHORT).show();
     }
@@ -115,7 +120,7 @@ public class EndingActivity extends Activity {
         DatabaseHelper db = new DatabaseHelper(this);
 
         int updcount = db.updateEnding();
-        if (MainApp.memFlag != 0) {
+        /*if (MainApp.memFlag != 0) {
             db.updateCensus();
         }
         if (MainApp.currentDeceasedCheck != 0) {
@@ -126,7 +131,7 @@ public class EndingActivity extends Activity {
         }
         if (MainApp.totalChild != 0) {
             db.updateIM();
-        }
+        }*/
 
         if (updcount == 1) {
             Toast.makeText(this, "Updating Database... Successful!", Toast.LENGTH_SHORT).show();

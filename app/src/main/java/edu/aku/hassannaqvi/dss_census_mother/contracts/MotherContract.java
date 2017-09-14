@@ -12,10 +12,9 @@ import org.json.JSONObject;
 
 public class MotherContract {
 
-    private final String projectName = "DSS Census";
+    private final String projectName = "DSS Selected";
     private String _ID = "";
     private String UID = "";
-    private String _UUID = "";
     private String deviceId = "";
     private String formDate = ""; // Date
     private String user = ""; // Interviewer
@@ -26,12 +25,14 @@ public class MotherContract {
     private String sH = "";
     private String sI = "";
     private String sJ = "";
-    //private String sK = "";
+    private String sL = "";
+    private String sM = "";
     private String deviceID = "";
     private String synced = "";
     private String synced_date = "";
     private String istatus = "";
 
+    private String devicetagID = "";
 
     public MotherContract() {
     }
@@ -57,12 +58,12 @@ public class MotherContract {
         this.UID = UID;
     }
 
-    public String get_UUID() {
-        return _UUID;
+    public String getsM() {
+        return sM;
     }
 
-    public void set_UUID(String _UUID) {
-        this._UUID = _UUID;
+    public void setsM(String sM) {
+        this.sM = sM;
     }
 
     public String getDeviceId() {
@@ -113,13 +114,13 @@ public class MotherContract {
         this.sJ = sJ;
     }
 
-   /* public String getsK() {
-        return sK;
+    public String getsL() {
+        return sL;
     }
 
-    public void setsK(String sK) {
-        this.sK = sK;
-    }*/
+    public void setsL(String sL) {
+        this.sL = sL;
+    }
 
     public String getSynced() {
         return synced;
@@ -185,10 +186,18 @@ public class MotherContract {
         this.istatus = istatus;
     }
 
+    public String getDevicetagID() {
+        return devicetagID;
+    }
+
+    public void setDevicetagID(String devicetagID) {
+        this.devicetagID = devicetagID;
+    }
+
     public MotherContract Sync(JSONObject jsonObject) throws JSONException {
 
         this._ID = jsonObject.getString(MotherTB.COLUMN_ID);
-        this._UUID = jsonObject.getString(MotherTB.COLUMN_UUID);
+        this.sM = jsonObject.getString(MotherTB.COLUMN_SM);
         this.UID = jsonObject.getString(MotherTB.COLUMN_UID);
         this.formDate = jsonObject.getString(MotherTB.COLUMN_FORMDATE);
         this.user = jsonObject.getString(MotherTB.COLUMN_USER);
@@ -197,7 +206,7 @@ public class MotherContract {
         this.sH = jsonObject.getString(MotherTB.COLUMN_SH);
         this.sI = jsonObject.getString(MotherTB.COLUMN_SI);
         this.sJ = jsonObject.getString(MotherTB.COLUMN_SJ);
-        //this.sK = jsonObject.getString(MotherTB.COLUMN_SK);
+        this.sL = jsonObject.getString(MotherTB.COLUMN_SL);
         this.deviceID = jsonObject.getString(MotherTB.COLUMN_DEVICEID);
         this.synced = jsonObject.getString(MotherTB.COLUMN_SYNCED);
         this.synced_date = jsonObject.getString(MotherTB.COLUMN_SYNCED_DATE);
@@ -207,6 +216,8 @@ public class MotherContract {
         this.motherID= jsonObject.getString(MotherTB.COLUMN_MOTHERID);
         this.istatus= jsonObject.getString(MotherTB.COLUMN_ISTATUS);
 
+        this.devicetagID= jsonObject.getString(MotherTB.COLUMN_DEVICETAGID);
+
 
         return this;
 
@@ -215,7 +226,7 @@ public class MotherContract {
     public MotherContract Hydrate(Cursor cursor) {
 
         this._ID = cursor.getString(cursor.getColumnIndex(MotherTB.COLUMN_ID));
-        this._UUID = cursor.getString(cursor.getColumnIndex(MotherTB.COLUMN_UUID));
+        this.sM = cursor.getString(cursor.getColumnIndex(MotherTB.COLUMN_SM));
         this.UID = cursor.getString(cursor.getColumnIndex(MotherTB.COLUMN_UID));
         this.formDate = cursor.getString(cursor.getColumnIndex(MotherTB.COLUMN_FORMDATE));
         this.user = cursor.getString(cursor.getColumnIndex(MotherTB.COLUMN_USER));
@@ -224,13 +235,15 @@ public class MotherContract {
         this.sH = cursor.getString(cursor.getColumnIndex(MotherTB.COLUMN_SH));
         this.sI = cursor.getString(cursor.getColumnIndex(MotherTB.COLUMN_SI));
         this.sJ = cursor.getString(cursor.getColumnIndex(MotherTB.COLUMN_SJ));
-        //this.sK = cursor.getString(cursor.getColumnIndex(MotherTB.COLUMN_SK));
+        this.sL = cursor.getString(cursor.getColumnIndex(MotherTB.COLUMN_SL));
         this.deviceID = cursor.getString(cursor.getColumnIndex(MotherTB.COLUMN_DEVICEID));
 
         this.childID = cursor.getString(cursor.getColumnIndex(MotherTB.COLUMN_CHILDID));
         this.dssID = cursor.getString(cursor.getColumnIndex(MotherTB.COLUMN_DSSID));
         this.motherID = cursor.getString(cursor.getColumnIndex(MotherTB.COLUMN_MOTHERID));
         this.istatus = cursor.getString(cursor.getColumnIndex(MotherTB.COLUMN_ISTATUS));
+
+        this.devicetagID = cursor.getString(cursor.getColumnIndex(MotherTB.COLUMN_DEVICETAGID));
 
 
         return this;
@@ -243,7 +256,6 @@ public class MotherContract {
         JSONObject json = new JSONObject();
 
         json.put(MotherTB.COLUMN_ID, this._ID == null ? JSONObject.NULL : this._ID);
-        json.put(MotherTB.COLUMN_UUID, this._UUID == null ? JSONObject.NULL : this._UUID);
         json.put(MotherTB.COLUMN_UID, this.UID == null ? JSONObject.NULL : this.UID);
         json.put(MotherTB.COLUMN_FORMDATE, this.formDate == null ? JSONObject.NULL : this.formDate);
         json.put(MotherTB.COLUMN_USER, this.user == null ? JSONObject.NULL : this.user);
@@ -252,13 +264,16 @@ public class MotherContract {
         json.put(MotherTB.COLUMN_SH, this.sH == null ? JSONObject.NULL :  new JSONObject(this.sH));
         json.put(MotherTB.COLUMN_SI, this.sI == null ? JSONObject.NULL :  new JSONObject(this.sI));
         json.put(MotherTB.COLUMN_SJ, this.sJ == null ? JSONObject.NULL :  new JSONObject(this.sJ));
-        //json.put(MotherTB.COLUMN_SK, this.sK == null ? JSONObject.NULL : this.sK);
+        json.put(MotherTB.COLUMN_SL, this.sL == null ? JSONObject.NULL :  new JSONObject(this.sL));
+        json.put(MotherTB.COLUMN_SM, this.sM == null ? JSONObject.NULL :  new JSONObject(this.sM));
         json.put(MotherTB.COLUMN_DEVICEID, this.deviceID == null ? JSONObject.NULL : this.deviceID);
 
         json.put(MotherTB.COLUMN_CHILDID, this.childID == null ? JSONObject.NULL : this.childID);
         json.put(MotherTB.COLUMN_DSSID, this.dssID == null ? JSONObject.NULL : this.dssID);
         json.put(MotherTB.COLUMN_MOTHERID, this.motherID == null ? JSONObject.NULL : this.motherID);
         json.put(MotherTB.COLUMN_ISTATUS, this.istatus == null ? JSONObject.NULL : this.istatus);
+
+        json.put(MotherTB.COLUMN_DEVICETAGID, this.devicetagID == null ? JSONObject.NULL : this.devicetagID);
 
         return json;
     }
@@ -270,7 +285,6 @@ public class MotherContract {
 
         public static final String COLUMN_PROJECT_NAME = "project_name";
         public static final String COLUMN_ID = "id";
-        public static final String COLUMN_UUID = "uuid";
         public static final String COLUMN_UID = "uid";
         public static final String COLUMN_FORMDATE = "formdate";
         public static final String COLUMN_USER = "user";
@@ -279,7 +293,8 @@ public class MotherContract {
         public static final String COLUMN_SH = "sh";
         public static final String COLUMN_SI = "si";
         public static final String COLUMN_SJ = "sj";
-        //public static final String COLUMN_SK = "sk";
+        public static final String COLUMN_SL = "sl";
+        public static final String COLUMN_SM = "sm";
         public static final String COLUMN_DEVICEID = "deviceid";
         public static final String COLUMN_SYNCED = "synced";
         public static final String COLUMN_SYNCED_DATE = "synced_date";
@@ -289,6 +304,7 @@ public class MotherContract {
         public static final String COLUMN_MOTHERID = "motherid";
         public static final String COLUMN_ISTATUS = "istatus";
 
+        public static final String COLUMN_DEVICETAGID = "tagid";
 
         public static String _URL = "mothers.php";
     }
