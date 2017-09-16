@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DSS-Census-Mother.iml" filepath="$PROJECT_DIR$/DSS-Census-Mother.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DSS-Selected.iml" filepath="$PROJECT_DIR$/DSS-Selected.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
