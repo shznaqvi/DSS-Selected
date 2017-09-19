@@ -26,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,6 +60,10 @@ public class MotherListActivity extends Activity {
     int leftChild = 0;
     int mwras = 0;
 
+    boolean backFlag;
+
+    listAdapter motherAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +74,8 @@ public class MotherListActivity extends Activity {
         dca03.setSelection(dca03.getText().length());
 
         db = new DatabaseHelper(this);
+
+        backFlag = false;
 
         try {
             /*Collection<MothersLst> mo = db.getMotherByUUID(MainApp.fc.getUID());
@@ -167,10 +174,13 @@ public class MotherListActivity extends Activity {
 
         membersExists.setVisibility(View.VISIBLE);
         MainApp.lstSelectedMothers = new ArrayList<>();
+        MainApp.insertPos = new HashMap<>();
 
         if (!dca03.getText().toString().isEmpty() && dca03.getText().length() == 11) {
             dca03.setError(null);
-            selectedMothers = db.getSelectedMothersByDSS(dca03.getText().toString().toUpperCase());
+            selectedMothers = db.getSelectedMothersByDSS01(dca03.getText().toString().toUpperCase());
+
+            mwras = 0;
 
             if (selectedMothers.size() != 0) {
 
@@ -179,11 +189,19 @@ public class MotherListActivity extends Activity {
                 for (MembersContract ec : selectedMothers) {
                     if (MainApp.yearsBetweenDates(ec.getDob())) {
                         MainApp.lstSelectedMothers.add(new MembersContract(ec));
+
+                        if (mwras != 0) {
+                            MainApp.insertPos.put(mwras, 0);
+                        } else {
+                            MainApp.insertPos.put(mwras, 1);
+                        }
+
                         mwras++;
+
                     }
                 }
 
-                listAdapter motherAdapter = new listAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, MainApp.lstSelectedMothers);
+                motherAdapter = new listAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, MainApp.lstSelectedMothers);
 
                 motherList.setAdapter(motherAdapter);
 
@@ -214,8 +232,10 @@ public class MotherListActivity extends Activity {
         Toast.makeText(this, "Starting Form Ending Section", Toast.LENGTH_SHORT).show();
 
         finish();
-        Intent secNext = new Intent(this, EndingActivity.class);
-        secNext.putExtra("check", true);
+
+        MainApp.endFlag = false;
+
+        Intent secNext = new Intent(this, MainActivity.class);
         startActivity(secNext);
 
 //        MainApp.endActivity(this,this);
@@ -237,18 +257,34 @@ public class MotherListActivity extends Activity {
             return false;
         }
 
+/*        @Override
+        public boolean isEnabled(int position) {
+            return false;
+        }*/
+
+
         @Override
         public View getView(final int position, View view, ViewGroup viewGroup) {
             View v = view;
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = inflater.inflate(R.layout.lstview, null);
             final TextView mother_name = (TextView) v.findViewById(R.id.mother_name);
-            TextView dss_id_member = (TextView) v.findViewById(R.id.dss_id_member);
+            TextView childName = (TextView) v.findViewById(R.id.childname);
             TextView date_of_birth = (TextView) v.findViewById(R.id.date_of_birth);
 
             mother_name.setText(list.get(position).getName());
-            dss_id_member.setText(list.get(position).getDss_id_member());
-            date_of_birth.setText(list.get(position).getDob());
+            childName.setText(list.get(position).getChild_name());
+            date_of_birth.setText(list.get(position).getChildDob());
+
+
+            if (MainApp.insertPos.get(position) == 0) {
+                v.setEnabled(isEnabled(position));
+                v.setBackgroundColor(getResources().getColor(R.color.gray));
+            } else if (MainApp.insertPos.get(position) == 2) {
+                v.setEnabled(isEnabled(position));
+                v.setBackgroundColor(getResources().getColor(R.color.gray));
+            }
+
 
 //            if (MainApp.yearsBetweenDates(list.get(motherPosition).getDob())) {
                 /*motherList.getChildAt(motherPosition).setEnabled(false);
@@ -277,8 +313,12 @@ public class MotherListActivity extends Activity {
                     new android.os.Handler().postDelayed(
                             new Runnable() {
                                 public void run() {
+
+                                    MainApp.insertPos.put(position + 1, 1);
+                                    MainApp.insertPos.put(position, 2);
+
                                     // On complete call either onLoginSuccess or onLoginFailed
-                                    checkChildrens(list.get(position).getDss_id_hh(), list.get(position).getDss_id_member(), position);
+                                    checkChildrens(list.get(position).getDss_id_hh(), list.get(position).getDss_id_member(), list.get(position).getChildDob(), position);
                                 }
                             }, 1000);
 
@@ -289,9 +329,9 @@ public class MotherListActivity extends Activity {
             return v;
         }
 
-        public void checkChildrens(String dssID, String member_id, int position) {
+        public void checkChildrens(String dssID, String member_id, String childDob, int position) {
 
-            Collection<MembersContract> children = db.getSelectedChildByMotherID(dssID, member_id);
+            Collection<MembersContract> children = db.getSelectedChildByMotherID(dssID, member_id, childDob);
 
             MainApp.lstSelectedChildren = new ArrayList<>();
 
@@ -324,6 +364,8 @@ public class MotherListActivity extends Activity {
                     Intent cb = new Intent(getApplicationContext(), SectionFActivity.class);
                     cb.putExtra("motherPosition", position);
                     startActivity(cb);
+                } else {
+                    Toast.makeText(getApplicationContext(), "No child less then 2", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -337,13 +379,25 @@ public class MotherListActivity extends Activity {
         super.onResume();
 
         if (MainApp.endFlag) {
+
             btn_End.setVisibility(View.VISIBLE);
             dca03.setEnabled(false);
-
             checkSelectedHHID.setEnabled(false);
-
             motherList.setVisibility(View.VISIBLE);
+            if (backFlag) {
+                motherAdapter.notifyDataSetChanged();
+            }
+            backFlag = true;
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (backFlag) {
+            Toast.makeText(getApplicationContext(), "You Can't go back!", Toast.LENGTH_SHORT).show();
+        } else {
+            super.onBackPressed();
+        }
     }
 }
