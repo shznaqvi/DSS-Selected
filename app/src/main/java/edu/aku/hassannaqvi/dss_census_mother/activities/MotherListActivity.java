@@ -60,7 +60,7 @@ public class MotherListActivity extends Activity {
     int leftChild = 0;
     int mwras = 0;
 
-    boolean backFlag;
+    boolean backFlag = false;
 
     listAdapter motherAdapter;
 
@@ -75,7 +75,6 @@ public class MotherListActivity extends Activity {
 
         db = new DatabaseHelper(this);
 
-        backFlag = false;
 
         try {
             /*Collection<MothersLst> mo = db.getMotherByUUID(MainApp.fc.getUID());
@@ -233,7 +232,9 @@ public class MotherListActivity extends Activity {
 
         finish();
 
-        MainApp.endFlag = false;
+//        MainApp.endFlag = false;
+
+        MainApp.insertPos.clear();
 
         Intent secNext = new Intent(this, MainActivity.class);
         startActivity(secNext);
@@ -384,9 +385,9 @@ public class MotherListActivity extends Activity {
             dca03.setEnabled(false);
             checkSelectedHHID.setEnabled(false);
             motherList.setVisibility(View.VISIBLE);
-            if (backFlag) {
+//            if (backFlag) {
                 motherAdapter.notifyDataSetChanged();
-            }
+//            }
             backFlag = true;
         }
 

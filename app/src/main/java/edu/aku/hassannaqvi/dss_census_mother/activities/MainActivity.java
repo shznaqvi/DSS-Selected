@@ -185,6 +185,9 @@ public class MainActivity extends Activity {
     }
 
     public void openForm(View v) {
+
+        MainApp.endFlag = false;
+
         if (sharedPref.getString("tagName", null) != "" && sharedPref.getString("tagName", null) != null && !MainApp.userName.equals("0000")) {
             Intent oF = new Intent(MainActivity.this, MotherListActivity.class);
             startActivity(oF);
