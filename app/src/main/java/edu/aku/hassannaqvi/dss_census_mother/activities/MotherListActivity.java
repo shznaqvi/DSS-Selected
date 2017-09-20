@@ -137,7 +137,7 @@ public class MotherListActivity extends Activity {
     public Boolean checkChild(String dob) {
 
         try {
-            Date dt = new SimpleDateFormat("dd-MM-yy").parse(dob);
+            Date dt = new SimpleDateFormat("yyyy-mm-dd").parse(dob);
 
             if (MainApp.monthsBetweenDates(dt, new Date()) < MainApp.selectedCHILD) {
                 return true;
@@ -319,7 +319,8 @@ public class MotherListActivity extends Activity {
                                     MainApp.insertPos.put(position, 2);
 
                                     // On complete call either onLoginSuccess or onLoginFailed
-                                    checkChildrens(list.get(position).getDss_id_hh(), list.get(position).getDss_id_member(), list.get(position).getChildDob(), position);
+                                    checkChildrens(list.get(position).getDss_id_hh(), list.get(position).getDss_id_member(), list.get(position).getChildDob(),
+                                            list.get(position).getChild_name(), position);
                                 }
                             }, 1000);
 
@@ -330,9 +331,9 @@ public class MotherListActivity extends Activity {
             return v;
         }
 
-        public void checkChildrens(String dssID, String member_id, String childDob, int position) {
+        public void checkChildrens(String dssID, String member_id, String childDob, String childName, int position) {
 
-            Collection<MembersContract> children = db.getSelectedChildByMotherID(dssID, member_id, childDob);
+            Collection<MembersContract> children = db.getSelectedChildByMotherID(dssID, member_id, childDob, childName);
 
             MainApp.lstSelectedChildren = new ArrayList<>();
 
@@ -386,7 +387,7 @@ public class MotherListActivity extends Activity {
             checkSelectedHHID.setEnabled(false);
             motherList.setVisibility(View.VISIBLE);
 //            if (backFlag) {
-                motherAdapter.notifyDataSetChanged();
+            motherAdapter.notifyDataSetChanged();
 //            }
             backFlag = true;
         }

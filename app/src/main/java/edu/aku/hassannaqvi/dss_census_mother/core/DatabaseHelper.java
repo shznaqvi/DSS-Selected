@@ -499,7 +499,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return memList;
     }
 
-    public Collection<MembersContract> getSelectedChildByMotherID(String dssID, String member_id, String dob) {
+    public Collection<MembersContract> getSelectedChildByMotherID(String dssID, String member_id, String dob,
+                                                                  String childName) {
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = null;
@@ -514,9 +515,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         };
 
         String whereClause = singleMember.COLUMN_DSS_ID_HH + " = ? AND " + singleMember.COLUMN_MEMBER_TYPE + " = ? AND "
-                + singleMember.COLUMN_DOB + " = ? AND "
+                + singleMember.COLUMN_DOB + " = ? AND "+ singleMember.COLUMN_NAME + " LIKE ? AND "
                 + singleMember.COLUMN_DSS_ID_MEMBER + " LIKE ?";
-        String[] whereArgs = new String[]{dssID, "CH", dob, "%" + member_id + "%"};
+        String[] whereArgs = new String[]{dssID, "CH", dob, "%" + childName + "%", "%" + member_id + "%"};
         String groupBy = null;
         String having = null;
 
