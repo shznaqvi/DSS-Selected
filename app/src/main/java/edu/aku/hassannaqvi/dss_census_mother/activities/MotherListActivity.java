@@ -137,7 +137,8 @@ public class MotherListActivity extends Activity {
     public Boolean checkChild(String dob) {
 
         try {
-            Date dt = new SimpleDateFormat("yyyy-mm-dd").parse(dob);
+
+            Date dt = new SimpleDateFormat("yyyy-MM-dd").parse(dob);
 
             if (MainApp.monthsBetweenDates(dt, new Date()) < MainApp.selectedCHILD) {
                 return true;
