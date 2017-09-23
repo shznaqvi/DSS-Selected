@@ -655,7 +655,7 @@ public class SectionIActivity extends Activity implements RadioGroup.OnCheckedCh
         sI.put("dci17g", dci17g01.isChecked() ? "1" : dci17g02.isChecked() ? "2" : dci17g99.isChecked() ? "99" : "0");
         sI.put("dci17h", dci17h01.isChecked() ? "1" : dci17h02.isChecked() ? "2" : dci17h99.isChecked() ? "99" : "0");
         sI.put("dci17i", dci17i01.isChecked() ? "1" : dci17i02.isChecked() ? "2" : dci17i99.isChecked() ? "99" : "0");
-        sI.put("dci17ix", dci17ix.getText().toString());
+//        sI.put("dci17ix", dci17ix.getText().toString());
         sI.put("dci18a", dci18a01.isChecked() ? "1" : dci18a02.isChecked() ? "2" : dci18a99.isChecked() ? "99" : "0");
         sI.put("dci18b", dci18b01.isChecked() ? "1" : dci18b02.isChecked() ? "2" : dci18b99.isChecked() ? "99" : "0");
         sI.put("dci18c", dci18c01.isChecked() ? "1" : dci18c02.isChecked() ? "2" : dci18c99.isChecked() ? "99" : "0");
