@@ -674,8 +674,8 @@ public class SectionIActivity extends Activity implements RadioGroup.OnCheckedCh
         sI.put("dci18p", dci18p01.isChecked() ? "1" : dci18p02.isChecked() ? "2" : dci18p99.isChecked() ? "99" : "0");
         sI.put("dci18q", dci18q01.isChecked() ? "1" : dci18q02.isChecked() ? "2" : dci18q99.isChecked() ? "99" : "0");
         sI.put("dci19", dci1901.isChecked() ? "1" : dci1902.isChecked() ? "2" : dci1999.isChecked() ? "99" : "0");
-        sI.put("dci2001", dci2001.getText().toString());
-        sI.put("dci20", dci2099.isChecked() ? "99" : "0");
+//        sI.put("dci2001", dci2001.getText().toString());
+        sI.put("dci20", dci2099.isChecked() ? "99" : dci2001.getText().toString());
         sI.put("dci21", dci2101.isChecked() ? "1" : dci2102.isChecked() ? "2" : dci2199.isChecked() ? "99" : "0");
 
         MainApp.mc.setsI(String.valueOf(sI));
