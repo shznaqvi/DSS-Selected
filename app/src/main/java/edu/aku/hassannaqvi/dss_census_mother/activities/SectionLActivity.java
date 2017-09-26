@@ -808,7 +808,7 @@ public class SectionLActivity extends Activity {
         sL.put("dcl01dc", dcl01dc.isChecked() ? "1" : "0");
         sL.put("dcl01d2days", dcl01d2days.getText().toString());
         sL.put("dcl01em", dcl01em.isChecked() ? "1" : "0");
-        sL.put("dcl01e1days", dcl01a1days.getText().toString());
+        sL.put("dcl01e1days", dcl01e1days.getText().toString());
         sL.put("dcl01ec", dcl01ec.isChecked() ? "1" : "0");
         sL.put("dcl01e2days", dcl01e2days.getText().toString());
         sL.put("dcl01fm", dcl01fm.isChecked() ? "1" : "0");
