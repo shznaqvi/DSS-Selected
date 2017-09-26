@@ -39,6 +39,7 @@ import edu.aku.hassannaqvi.dss_census_mother.sync.SyncCensus;
 import edu.aku.hassannaqvi.dss_census_mother.sync.SyncDeceased;
 import edu.aku.hassannaqvi.dss_census_mother.sync.SyncForms;
 import edu.aku.hassannaqvi.dss_census_mother.sync.SyncIM;
+import edu.aku.hassannaqvi.dss_census_mother.sync.SyncMother;
 
 public class MainActivity extends Activity {
 
@@ -185,6 +186,9 @@ public class MainActivity extends Activity {
     }
 
     public void openForm(View v) {
+
+        MainApp.endFlag = false;
+
         if (sharedPref.getString("tagName", null) != "" && sharedPref.getString("tagName", null) != null && !MainApp.userName.equals("0000")) {
             Intent oF = new Intent(MainActivity.this, MotherListActivity.class);
             startActivity(oF);
@@ -296,20 +300,20 @@ public class MainActivity extends Activity {
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
-            Toast.makeText(getApplicationContext(), "Syncing Forms", Toast.LENGTH_SHORT).show();
+/*            Toast.makeText(getApplicationContext(), "Syncing Forms", Toast.LENGTH_SHORT).show();
             new SyncForms(this).execute();
 
             Toast.makeText(getApplicationContext(), "Syncing Census", Toast.LENGTH_SHORT).show();
             new SyncCensus(this).execute();
 
             Toast.makeText(getApplicationContext(), "Syncing Deceased", Toast.LENGTH_SHORT).show();
-            new SyncDeceased(this).execute();
+            new SyncDeceased(this).execute();*/
 
-//            Toast.makeText(getApplicationContext(), "Syncing Mother", Toast.LENGTH_SHORT).show();
-//            new SyncMother(this).execute();
+            Toast.makeText(getApplicationContext(), "Syncing Mother", Toast.LENGTH_SHORT).show();
+            new SyncMother(this).execute();
 
-            Toast.makeText(getApplicationContext(), "Syncing IM", Toast.LENGTH_SHORT).show();
-            new SyncIM(this).execute();
+/*            Toast.makeText(getApplicationContext(), "Syncing IM", Toast.LENGTH_SHORT).show();
+            new SyncIM(this).execute();*/
 
             SharedPreferences syncPref = getSharedPreferences("SyncInfo", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = syncPref.edit();

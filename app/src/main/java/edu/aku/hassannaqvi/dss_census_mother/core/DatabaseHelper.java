@@ -155,12 +155,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             singleMember.COLUMN_DOB + " TEXT," +
             singleMember.COLUMN_GENDER + " TEXT," +
             singleMember.COLUMN_MEMBER_TYPE + " TEXT" +
-
-            /*singleMember.COLUMN_DATE + " TEXT," +
+//            singleMember.COLUMN_CHILD_DOB + " TEXT" +
+            /*
             singleMember.COLUMN_DSS_ID_F + " TEXT," +
             singleMember.COLUMN_DSS_ID_M + " TEXT," +
             singleMember.COLUMN_DSS_ID_H + " TEXT," +
-            singleMember.COLUMN_PREVS_DSS_ID_MEMBER + " TEXT," +
+            singleMember.COLUMN_CHILD_NAME + " TEXT," +
             singleMember.COLUMN_SITE_CODE + " TEXT," +
             singleMember.COLUMN_AGE + " TEXT," +
             singleMember.COLUMN_IS_HEAD + " TEXT," +
@@ -181,7 +181,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             DeceasedMember.COLUMN_DEVICETAGID + " TEXT," +
             DeceasedMember.COLUMN_UID + " TEXT," +
             DeceasedMember.COLUMN_SM + " TEXT," +
-            DeceasedMember.COLUMN_DATE + " TEXT," +
+            DeceasedMember.COLUMN_CHILD_DOB + " TEXT," +
             DeceasedMember.COLUMN_FORMDATE + " TEXT," +
             DeceasedMember.COLUMN_DEVICEID + " TEXT," +
             DeceasedMember.COLUMN_USER + " TEXT," +
@@ -215,10 +215,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             MotherTB.COLUMN_UID + " TEXT," +
             MotherTB.COLUMN_FORMDATE + " TEXT," +
             MotherTB.COLUMN_USER + " TEXT," +
-            MotherTB.COLUMN_CHILDID + " TEXT,"+
-            MotherTB.COLUMN_DSSID + " TEXT,"+
-            MotherTB.COLUMN_MOTHERID + " TEXT,"+
-            MotherTB.COLUMN_ISTATUS + " TEXT,"+
+            MotherTB.COLUMN_CHILDID + " TEXT," +
+            MotherTB.COLUMN_DSSID + " TEXT," +
+            MotherTB.COLUMN_MOTHERID + " TEXT," +
+            MotherTB.COLUMN_ISTATUS + " TEXT," +
             MotherTB.COLUMN_SF + " TEXT," +
             MotherTB.COLUMN_SG + " TEXT," +
             MotherTB.COLUMN_SH + " TEXT," +
@@ -360,11 +360,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(singleMember.COLUMN_DSS_ID_HH, member.getDss_id_hh());
                 values.put(singleMember.COLUMN_GENDER, member.getGender());
                 values.put(singleMember.COLUMN_MEMBER_TYPE, member.getMember_type());
-                /*values.put(singleMember.COLUMN_DATE, member.get_DATE());
+//                values.put(singleMember.COLUMN_CHILD_DOB, member.getChildDob());
+                /*
                 values.put(singleMember.COLUMN_DSS_ID_F, member.getDss_id_f());
                 values.put(singleMember.COLUMN_DSS_ID_M, member.getDss_id_m());
                 values.put(singleMember.COLUMN_DSS_ID_H, member.getDss_id_h());
-                values.put(singleMember.COLUMN_PREVS_DSS_ID_MEMBER, member.getPrevs_dss_id_member());
+                values.put(singleMember.COLUMN_CHILD_NAME, member.getChild_name());
                 values.put(singleMember.COLUMN_SITE_CODE, member.getSite_code());
                 values.put(singleMember.COLUMN_AGE, member.getAge());
                 values.put(singleMember.COLUMN_IS_HEAD, member.getIs_head());
@@ -403,6 +404,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
+    public Collection<MembersContract> getSelectedMothersByDSS01(String dssID) throws SQLException {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor mCursor = db.rawQuery("SELECT m.*, max(c.dob) child_dob, c.name as childName FROM selectedMembers m join selectedMembers c on m.dss_id_member = substr(c.dss_id_member,1,12) where m.member_type = 'M' and c.member_type = 'CH' and m.dss_id_hh =? group by m.dss_id_member order by m.dss_id_hh,date(c.dob) DESC;"
+                , new String[]{dssID});
+/*        Cursor mCursor = db.rawQuery("SELECT m.* from selectedMembers m where m.member_type = 'M' and m.dss_id_hh =? group by m.dss_id_member order by m.dss_id_hh;"
+                , new String[]{dssID});*/
+
+        Collection<MembersContract> memList = new ArrayList<>();
+
+        try {
+            if (mCursor != null) {
+                if (mCursor.getCount() > 0) {
+                    while (mCursor.moveToNext()) {
+                        MembersContract mc = new MembersContract();
+                        memList.add(mc.Hydrate(mCursor));
+                    }
+                }
+            }
+        } finally {
+            if (mCursor != null) {
+                mCursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
+
+        return memList;
+    }
+
     public Collection<MembersContract> getSelectedMothersByDSS(String dssID) {
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -415,12 +447,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 singleMember.COLUMN_DOB,
                 singleMember.COLUMN_GENDER,
                 singleMember.COLUMN_MEMBER_TYPE,
-
-                /*singleMember.COLUMN_DATE,
+//                singleMember.COLUMN_CHILD_DOB,
+                /*
                 singleMember.COLUMN_DSS_ID_F,
                 singleMember.COLUMN_DSS_ID_M,
                 singleMember.COLUMN_DSS_ID_H,
-                singleMember.COLUMN_PREVS_DSS_ID_MEMBER,
+                singleMember.COLUMN_CHILD_NAME,
                 singleMember.COLUMN_SITE_CODE,
                 singleMember.COLUMN_AGE,
                 singleMember.COLUMN_IS_HEAD,
@@ -433,8 +465,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 singleMember.COLUMN_OCCUPATION,*/
         };
 
-        String whereClause = singleMember.COLUMN_DSS_ID_HH + " = ? AND "+singleMember.COLUMN_MEMBER_TYPE + " = ?";
-        String[] whereArgs = new String[]{dssID,"M"};
+        String whereClause = singleMember.COLUMN_DSS_ID_HH + " = ? AND " + singleMember.COLUMN_MEMBER_TYPE + " = ?";
+        String[] whereArgs = new String[]{dssID, "M"};
         String groupBy = null;
         String having = null;
 
@@ -467,7 +499,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return memList;
     }
 
-    public Collection<MembersContract> getSelectedChildByMotherID(String dssID,String member_id) {
+    public Collection<MembersContract> getSelectedChildByMotherID(String dssID, String member_id, String dob,
+                                                                  String childName) {
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = null;
@@ -481,9 +514,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 singleMember.COLUMN_MEMBER_TYPE,
         };
 
-        String whereClause = singleMember.COLUMN_DSS_ID_HH + " = ? AND "+singleMember.COLUMN_MEMBER_TYPE + " = ? AND "
+        String whereClause = singleMember.COLUMN_DSS_ID_HH + " = ? AND " + singleMember.COLUMN_MEMBER_TYPE + " = ? AND "
+                + singleMember.COLUMN_DOB + " = ? AND "+ singleMember.COLUMN_NAME + " LIKE ? AND "
                 + singleMember.COLUMN_DSS_ID_MEMBER + " LIKE ?";
-        String[] whereArgs = new String[]{dssID,"CH","%"+member_id+"%"};
+        String[] whereArgs = new String[]{dssID, "CH", dob, "%" + childName + "%", "%" + member_id + "%"};
         String groupBy = null;
         String having = null;
 
@@ -503,7 +537,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             );
             while (c.moveToNext()) {
                 MembersContract mc = new MembersContract();
-                memList.add(mc.Hydrate(c));
+                memList.add(mc.Hydrate01(c));
             }
         } finally {
             if (c != null) {
@@ -563,7 +597,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return memList;
     }
 
-    public Collection<CensusContract> getChildFromMember(String dssID,String uuid) {
+    public Collection<CensusContract> getChildFromMember(String dssID, String uuid) {
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = null;
@@ -842,7 +876,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 whereArgs);
     }
 
-    public void updateMotherCount(String memCount,String id) {
+    public void updateMotherCount(String memCount, String id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
 // New value for one column
@@ -935,6 +969,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 where,
                 whereArgs);
     }
+
     public void updateMother(String id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -953,6 +988,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 where,
                 whereArgs);
     }
+
     public void updateIM(String id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -1789,6 +1825,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 selectionArgs);
         return count;
     }
+
     public int updateDeceased() {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -1806,6 +1843,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 selectionArgs);
         return count;
     }
+
     public int updateMother() {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -1823,6 +1861,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 selectionArgs);
         return count;
     }
+
     public int updateIM() {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -1840,7 +1879,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 selectionArgs);
         return count;
     }
-
 
 
 }

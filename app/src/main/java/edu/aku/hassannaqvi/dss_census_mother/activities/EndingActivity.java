@@ -90,7 +90,7 @@ public class EndingActivity extends Activity {
                     MainApp.currentDeceasedCheck = 0;
                     MainApp.currentMotherCheck = 0;
 
-                    MainApp.selectedPos = -1;
+                    MainApp.selectedPos = 0;
 
                     MainApp.randID = 1;
 

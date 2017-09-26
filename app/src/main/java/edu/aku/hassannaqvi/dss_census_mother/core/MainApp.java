@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import edu.aku.hassannaqvi.dss_census_mother.activities.EndingActivity;
 import edu.aku.hassannaqvi.dss_census_mother.contracts.CensusContract;
@@ -105,12 +106,12 @@ public class MainApp extends Application {
     public static double selectedCHILD = 24;
     public static double selectedMotherMin = 15;
     public static double selectedMotherMax = 49;
-    public static int selectedPos = -1;
+    public static int selectedPos = 0;
 
     public static int selectedCh = -1;
 
 
-    public static List<String> insertMem;
+    public static Map<Integer,Integer> insertPos;
 
     Location location;
 
@@ -174,10 +175,10 @@ public class MainApp extends Application {
 
     public static boolean yearsBetweenDates(String dob) {
 
-        String[] dt = dob.split("/");
+        String[] dt = dob.split("-");
 
         Calendar cal = Calendar.getInstance();
-        cal.set(Integer.parseInt(dt[2]), Integer.parseInt(dt[1]) - 1, Integer.parseInt(dt[0]));
+        cal.set(Integer.parseInt(dt[0]), Integer.parseInt(dt[1]) - 1, Integer.parseInt(dt[2]));
         Date date1 = new Date();
         Date date2 = cal.getTime();
         long diff = date1.getTime() - date2.getTime();

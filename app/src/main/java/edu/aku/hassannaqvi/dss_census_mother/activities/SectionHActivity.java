@@ -57,8 +57,8 @@ public class SectionHActivity extends Activity {
     RadioButton dch0401;
     @BindView(R.id.dch0402)
     RadioButton dch0402;
-    @BindView(R.id.dch0403)
-    RadioButton dch0403;
+    @BindView(R.id.dch0499)
+    RadioButton dch0499;
     @BindView(R.id.fldGrpdch05)
     LinearLayout fldGrpdch05;
     @BindView(R.id.dch05)
@@ -410,7 +410,7 @@ public class SectionHActivity extends Activity {
         sH.put("dch01", dch0101.isChecked() ? "1" : dch0102.isChecked() ? "2" : "0");
         sH.put("dch02", dch0201.isChecked() ? "1" : dch0202.isChecked() ? "2" : "0");
         sH.put("dch03", dch0301.isChecked() ? "1" : dch0302.isChecked() ? "2" : "0");
-        sH.put("dch04", dch0401.isChecked() ? "1" : dch0402.isChecked() ? "2" : dch0403.isChecked() ? "99" : "0");
+        sH.put("dch04", dch0401.isChecked() ? "1" : dch0402.isChecked() ? "2" : dch0499.isChecked() ? "99" : "0");
         sH.put("dch05", dch05.getText().toString());
 
         sH.put("dch06", dch0601.isChecked() ? "1" : dch0602.isChecked() ? "2" : "0");

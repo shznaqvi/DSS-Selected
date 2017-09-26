@@ -446,6 +446,34 @@ public class SectionLActivity extends Activity {
             }
         });
 
+        // h1
+        dcl01im.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    dcl01i1days.setVisibility(View.VISIBLE);
+                } else {
+                    dcl01i1days.setVisibility(View.GONE);
+                    dcl01i1days.setText(null);
+                }
+            }
+        });
+
+        // h2
+        dcl01ic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    dcl01i2days.setVisibility(View.VISIBLE);
+                } else {
+                    dcl01i2days.setVisibility(View.GONE);
+                    dcl01i2days.setText(null);
+                }
+            }
+        });
+
         //======================= END of 1======================
 
         //=========================== 2 ======================

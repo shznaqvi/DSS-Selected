@@ -211,12 +211,12 @@ public class MotherContract {
         this.synced = jsonObject.getString(MotherTB.COLUMN_SYNCED);
         this.synced_date = jsonObject.getString(MotherTB.COLUMN_SYNCED_DATE);
 
-        this.childID= jsonObject.getString(MotherTB.COLUMN_CHILDID);
-        this.dssID= jsonObject.getString(MotherTB.COLUMN_DSSID);
-        this.motherID= jsonObject.getString(MotherTB.COLUMN_MOTHERID);
-        this.istatus= jsonObject.getString(MotherTB.COLUMN_ISTATUS);
+        this.childID = jsonObject.getString(MotherTB.COLUMN_CHILDID);
+        this.dssID = jsonObject.getString(MotherTB.COLUMN_DSSID);
+        this.motherID = jsonObject.getString(MotherTB.COLUMN_MOTHERID);
+        this.istatus = jsonObject.getString(MotherTB.COLUMN_ISTATUS);
 
-        this.devicetagID= jsonObject.getString(MotherTB.COLUMN_DEVICETAGID);
+        this.devicetagID = jsonObject.getString(MotherTB.COLUMN_DEVICETAGID);
 
 
         return this;
@@ -259,13 +259,27 @@ public class MotherContract {
         json.put(MotherTB.COLUMN_UID, this.UID == null ? JSONObject.NULL : this.UID);
         json.put(MotherTB.COLUMN_FORMDATE, this.formDate == null ? JSONObject.NULL : this.formDate);
         json.put(MotherTB.COLUMN_USER, this.user == null ? JSONObject.NULL : this.user);
-        json.put(MotherTB.COLUMN_SF, this.sF == null ? JSONObject.NULL :  new JSONObject(this.sF));
-        json.put(MotherTB.COLUMN_SG, this.sG == null ? JSONObject.NULL :  new JSONObject(this.sG));
-        json.put(MotherTB.COLUMN_SH, this.sH == null ? JSONObject.NULL :  new JSONObject(this.sH));
-        json.put(MotherTB.COLUMN_SI, this.sI == null ? JSONObject.NULL :  new JSONObject(this.sI));
-        json.put(MotherTB.COLUMN_SJ, this.sJ == null ? JSONObject.NULL :  new JSONObject(this.sJ));
-        json.put(MotherTB.COLUMN_SL, this.sL == null ? JSONObject.NULL :  new JSONObject(this.sL));
-        json.put(MotherTB.COLUMN_SM, this.sM == null ? JSONObject.NULL :  new JSONObject(this.sM));
+        if (!this.sF.equals("")) {
+            json.put(MotherTB.COLUMN_SF, this.sF == null ? JSONObject.NULL : new JSONObject(this.sF));
+        }
+        if (!this.sG.equals("")) {
+            json.put(MotherTB.COLUMN_SG, this.sG == null ? JSONObject.NULL : new JSONObject(this.sG));
+        }
+        if (!this.sH.equals("")) {
+            json.put(MotherTB.COLUMN_SH, this.sH == null ? JSONObject.NULL : new JSONObject(this.sH));
+        }
+        if (!this.sI.equals("")) {
+            json.put(MotherTB.COLUMN_SI, this.sI == null ? JSONObject.NULL : new JSONObject(this.sI));
+        }
+        if (!this.sJ.equals("")) {
+            json.put(MotherTB.COLUMN_SJ, this.sJ == null ? JSONObject.NULL : new JSONObject(this.sJ));
+        }
+        if (!this.sL.equals("")) {
+            json.put(MotherTB.COLUMN_SL, this.sL == null ? JSONObject.NULL : new JSONObject(this.sL));
+        }
+        if (!this.sM.equals("")) {
+            json.put(MotherTB.COLUMN_SM, this.sM == null ? JSONObject.NULL : new JSONObject(this.sM));
+        }
         json.put(MotherTB.COLUMN_DEVICEID, this.deviceID == null ? JSONObject.NULL : this.deviceID);
 
         json.put(MotherTB.COLUMN_CHILDID, this.childID == null ? JSONObject.NULL : this.childID);
