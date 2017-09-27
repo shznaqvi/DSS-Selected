@@ -73,7 +73,7 @@ public class SyncForms extends AsyncTask<Void, Void, String> {
 
     private String downloadUrl(String myurl) throws IOException {
         String line = "No Response";
-
+/*
         DatabaseHelper db = new DatabaseHelper(mContext);
         Collection<FormsContract> Forms = db.getUnsyncedForms();
         Log.d(TAG, String.valueOf(Forms.size()));
@@ -147,7 +147,7 @@ public class SyncForms extends AsyncTask<Void, Void, String> {
             }
         } else {
             return "No new records to sync";
-        }
+        }*/
         return line;
     }
 

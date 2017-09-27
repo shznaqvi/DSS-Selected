@@ -31,6 +31,7 @@ import butterknife.ButterKnife;
 import edu.aku.hassannaqvi.dss_census_mother.FormsList;
 import edu.aku.hassannaqvi.dss_census_mother.R;
 import edu.aku.hassannaqvi.dss_census_mother.contracts.FormsContract;
+import edu.aku.hassannaqvi.dss_census_mother.contracts.MotherContract;
 import edu.aku.hassannaqvi.dss_census_mother.core.AndroidDatabaseManager;
 import edu.aku.hassannaqvi.dss_census_mother.core.DatabaseHelper;
 import edu.aku.hassannaqvi.dss_census_mother.core.MainApp;
@@ -119,8 +120,8 @@ public class MainActivity extends Activity {
 
 
         DatabaseHelper db = new DatabaseHelper(this);
-        Collection<FormsContract> todaysForms = db.getTodayForms();
-        Collection<FormsContract> unsyncedForms = db.getUnsyncedForms();
+        Collection<MotherContract> todaysForms = db.getTodayForms();
+        Collection<MotherContract> unsyncedForms = db.getUnsyncedForms();
 
         rSumText += "TODAY'S RECORDS SUMMARY\r\n";
 
@@ -135,9 +136,9 @@ public class MainActivity extends Activity {
             rSumText += "[ DSS_ID ] \t[Form Status] \t[Sync Status]----------\r\n";
             rSumText += "--------------------------------------------------\r\n";
 
-            for (FormsContract fc : todaysForms) {
-                if (fc.getIstatus() != null) {
-                    switch (fc.getIstatus()) {
+            for (MotherContract mc : todaysForms) {
+                if (mc.getIstatus() != null) {
+                    switch (mc.getIstatus()) {
                         case "1":
                             iStatus = "\tComplete";
                             break;
@@ -148,7 +149,13 @@ public class MainActivity extends Activity {
                             iStatus = "\tRefused";
                             break;
                         case "4":
-                            iStatus = "\tRefused";
+                            iStatus = "\tNot Available";
+                            break;
+                        case "5":
+                            iStatus = "\tMigrated Out";
+                            break;
+                        case "6":
+                            iStatus = "\tInternal Movement";
                             break;
                         default:
                             iStatus = "\tN/A";
@@ -157,11 +164,11 @@ public class MainActivity extends Activity {
                     iStatus = "\tN/A";
                 }
 
-                rSumText += fc.getDSSID();
+                rSumText += mc.getDssID();
 
                 rSumText += " " + iStatus + " ";
 
-                rSumText += (fc.getSynced() == null ? "\t\tNot Synced" : "\t\tSynced");
+                rSumText += (mc.getSynced() == null ? "\t\tNot Synced" : "\t\tSynced");
                 rSumText += "\r\n";
                 rSumText += "--------------------------------------------------\r\n";
             }
