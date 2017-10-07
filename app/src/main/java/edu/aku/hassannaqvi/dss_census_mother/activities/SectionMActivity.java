@@ -144,11 +144,7 @@ public class SectionMActivity extends Activity {
     @BindView(R.id.dcm1406)
     RadioButton dcm1406;
     @BindView(R.id.dcm15)
-    RadioGroup dcm15;
-    @BindView(R.id.dcm1501)
-    RadioButton dcm1501;
-    @BindView(R.id.dcm1502)
-    RadioButton dcm1502;
+    EditText dcm15;
     @BindView(R.id.dcm16)
     RadioGroup dcm16;
     @BindView(R.id.dcm1601)
@@ -482,14 +478,14 @@ public class SectionMActivity extends Activity {
 
 
 //        15
-        if (dcm15.getCheckedRadioButtonId() == -1) {
+        if (dcm15.getText().toString().isEmpty()) {
             Toast.makeText(this, "ERROR(empty): " + getString(R.string.dcm15), Toast.LENGTH_SHORT).show();
-            dcm1502.setError("This data is Required!");    // Set Error on last radio button
+            dcm15.setError("This data is Required!");    // Set Error on last radio button
 
             Log.i(TAG, "dcm15: This data is Required!");
             return false;
         } else {
-            dcm1502.setError(null);
+            dcm15.setError(null);
         }
 
 //        16
@@ -596,7 +592,7 @@ public class SectionMActivity extends Activity {
         sM.put("dcm14", dcm1401.isChecked() ? "1" : dcm1402.isChecked() ? "2" : dcm1403.isChecked() ? "3"
                 : dcm1404.isChecked() ? "4" : dcm1405.isChecked() ? "5" : dcm1406.isChecked() ? "6" : "0");
 
-        sM.put("dcm15", dcm1501.isChecked() ? "1" : dcm1502.isChecked() ? "2" : "0");
+        sM.put("dcm15", dcm15.getText().toString());
         sM.put("dcm16", dcm1601.isChecked() ? "1" : dcm1602.isChecked() ? "2" : "0");
 
         sM.put("dcm17", dcm1701.isChecked() ? "1" : dcm1702.isChecked() ? "2" : dcm1799.isChecked() ? "99" : "0");

@@ -582,25 +582,13 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@android:color/white" />
 
-        <RadioGroup
+        <EditText
             android:id="@+id/dcm15"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <RadioButton
-                android:id="@+id/dcm1501"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                android:text="@string/dcyes" />
-
-            <RadioButton
-                android:id="@+id/dcm1502"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                android:text="@string/dcno" />
-        </RadioGroup>
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:inputType="number"
+            android:maxLength="2" />
 
         <TextView
             android:layout_width="match_parent"
