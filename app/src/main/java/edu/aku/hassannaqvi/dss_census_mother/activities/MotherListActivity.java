@@ -359,8 +359,8 @@ public class MotherListActivity extends Activity {
                     MainApp.mc.setDeviceId(Settings.Secure.getString(getApplicationContext().getContentResolver(),
                             Settings.Secure.ANDROID_ID));
                     MainApp.mc.setUser(MainApp.userName);
-                    MainApp.mc.setMotherID(MainApp.lstSelectedMothers.get(MainApp.motherPosition).getDss_id_member());
-                    MainApp.mc.setDssID(MainApp.lstSelectedMothers.get(MainApp.motherPosition).getDss_id_hh());
+                    MainApp.mc.setMotherID(MainApp.lstSelectedMothers.get(position).getDss_id_member());
+                    MainApp.mc.setDssID(MainApp.lstSelectedMothers.get(position).getDss_id_hh());
 
                     MainApp.currentMotherStatusCount--;
 
